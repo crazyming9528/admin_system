@@ -1,0 +1,152 @@
+@import "reset";
+//清除默认样式
+@import "base"; //引入基础样式配置
+
+
+
+//需要写全局样式的话 就写在这里
+
+.bg-white {
+  background-color: white;
+}
+.bg-red{
+  background-color: #fef0f0;
+}
+.bg-green{
+  background-color: #f0f9eb;
+}
+
+.bg-gray {
+  background-color: #f8f8f8;
+}
+
+input::-webkit-input-placeholder {
+  /* placeholder颜色  */
+  color: #cdcdcd;
+  /* placeholder字体大小  */
+  //font-size: 12px;
+  /* placeholder位置  */
+  text-align: left;
+}
+
+.c-main {
+
+  //通用的面板区域 间距
+  .panelArea {
+    margin: 15px 0;
+  }
+
+  .mainBody {
+    background-color: white;
+    padding: 0 10px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 0 15px 0 #e9e9e9;
+
+    .headArea {
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px #f1f1f1 solid;
+      padding-top: 15px;
+      .title {
+        font-size: 28px;
+        color: $baseColor3;
+      }
+      .description {
+        font-size: 14px;
+        color: gray;
+        padding-left: 5px;
+      }
+
+    }
+  }
+
+  .topArea {
+
+  }
+
+  //
+  //.headArea {
+  //  padding-top: 15px;
+  //  .title {
+  //    font-size: 28px;
+  //    color: $baseColor3;
+  //  }
+  //  .description {
+  //    font-size: 14px;
+  //    color: gray;
+  //    padding-left: 5px;
+  //  }
+  //
+  //}
+}
+
+
+.el-button{
+  border-bottom-right-radius:2px!important;
+    border-bottom-left-radius:2px!important;
+  border-top-left-radius:2px!important;
+    border-top-right-radius:2px!important;
+  transition: all 0.5s;
+  border: none;
+}
+.el-button--primary{
+
+  background-image: linear-gradient(120deg, $baseColor3 50%, #8ebcbd 100%)!important;
+&:hover{
+  transition: all 0.5s;
+  background-image: linear-gradient(120deg, $baseColor3 95%, #8ebcbd 100%)!important;
+  box-shadow: 0 3px 12px 0 #8ebcbd;
+}
+
+}
+.button-shadow{
+  transition: all 0.5s;
+  &:hover{
+    box-shadow: 0 2px 6px 0 rgba(79, 79, 79, 0.3);
+  }
+}
+
+.el-input__inner{
+  border-bottom-right-radius:2px!important;
+  border-bottom-left-radius:2px!important;
+  border-top-left-radius:2px!important;
+  border-top-right-radius:2px!important;
+  transition: all 0.5s;
+}
+.el-message{
+  border-bottom-right-radius:2px!important;
+  border-bottom-left-radius:2px!important;
+  border-top-left-radius:2px!important;
+  border-top-right-radius:2px!important;
+
+}
+.el-message-box{
+  border-bottom-right-radius:2px!important;
+  border-bottom-left-radius:2px!important;
+  border-top-left-radius:2px!important;
+  border-top-right-radius:2px!important;
+}
+
+//表格 样式控制
+.el-table{
+  tr{
+    background-color: transparent!important;
+  }
+  th{
+    text-align: center!important;
+    background-color: transparent!important;
+    color: white;
+  }
+}
+
+
+  .el-table__header-wrapper{
+
+    background-color: $baseColor3;
+    background-image: linear-gradient(120deg, $baseColor3 10%, #7bbdbc 70%);
+    background-size: 100% 100%;
+
+}
+
+//表格 样式控制结束
