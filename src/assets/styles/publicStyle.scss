@@ -2,7 +2,7 @@
 //清除默认样式
 @import "base"; //引入基础样式配置
 
-
+@import "changeUI";//引入对ui 框架的 改变
 
 //需要写全局样式的话 就写在这里
 
@@ -81,72 +81,3 @@ input::-webkit-input-placeholder {
   //}
 }
 
-
-.el-button{
-  border-bottom-right-radius:2px!important;
-    border-bottom-left-radius:2px!important;
-  border-top-left-radius:2px!important;
-    border-top-right-radius:2px!important;
-  transition: all 0.5s;
-  border: none;
-}
-.el-button--primary{
-
-  background-image: linear-gradient(120deg, $baseColor3 50%, #8ebcbd 100%)!important;
-&:hover{
-  transition: all 0.5s;
-  background-image: linear-gradient(120deg, $baseColor3 95%, #8ebcbd 100%)!important;
-  box-shadow: 0 3px 12px 0 #8ebcbd;
-}
-
-}
-.button-shadow{
-  transition: all 0.5s;
-  &:hover{
-    box-shadow: 0 2px 6px 0 rgba(79, 79, 79, 0.3);
-  }
-}
-
-.el-input__inner{
-  border-bottom-right-radius:2px!important;
-  border-bottom-left-radius:2px!important;
-  border-top-left-radius:2px!important;
-  border-top-right-radius:2px!important;
-  transition: all 0.5s;
-}
-.el-message{
-  border-bottom-right-radius:2px!important;
-  border-bottom-left-radius:2px!important;
-  border-top-left-radius:2px!important;
-  border-top-right-radius:2px!important;
-
-}
-.el-message-box{
-  border-bottom-right-radius:2px!important;
-  border-bottom-left-radius:2px!important;
-  border-top-left-radius:2px!important;
-  border-top-right-radius:2px!important;
-}
-
-//表格 样式控制
-.el-table{
-  tr{
-    background-color: transparent!important;
-  }
-  th{
-    text-align: center!important;
-    background-color: transparent!important;
-    color: white;
-  }
-}
-
-
-  .el-table__header-wrapper{
-
-    background-color: $baseColor3;
-    background-image: linear-gradient(120deg, $baseColor3 10%, #7bbdbc 70%);
-    background-size: 100% 100%;
-
-}
-
-//表格 样式控制结束
