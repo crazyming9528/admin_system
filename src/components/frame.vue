@@ -4,10 +4,11 @@
       <el-header class="frame-header">
         <div class="left wow fadeInLeft">
           <div class="logo" v-show="isCollapse"><img src="../assets/logo.png" alt="logo"/></div>
-          <span>CUIT Campus Services Management System</span>
-          <el-tooltip class="item" effect="dark" content="点击这里可以展开和收起侧栏菜单~"  manual value placement="right-start">
-          <el-button style="margin-left: 20px;font-weight: bold" type="text" size="mini" @click="toggleNav"
-          icon="el-icon-menu">切换菜单</el-button>
+          <span>成信校园服务平台管理系统</span>
+          <el-tooltip class="item" effect="dark" content="点击这里可以展开和收起侧栏菜单~" manual value placement="right-start">
+            <el-button style="margin-left: 20px;font-weight: bold" type="text" size="mini" @click="toggleNav"
+                       icon="el-icon-menu">切换菜单
+            </el-button>
           </el-tooltip>
         </div>
         <div class="right clearfix wow fadeInRight">
@@ -46,7 +47,8 @@
         <el-aside class="frame-aside">
           <div class="logo" v-show="!isCollapse"><img src="../assets/logo.png" alt="logo"/></div>
 
-          <el-menu :default-active="activeMenuIndex" :router=true style="border: none;" :unique-opened=true class="el-menu-vertical-demo"
+          <el-menu :default-active="activeMenuIndex" :router=true style="border: none;" :unique-opened=true
+                   class="el-menu-vertical-demo"
                    @open="handleOpen"
                    @close="handleClose" :collapse="isCollapse" background-color="#4f5254"
                    text-color="#fff"
@@ -82,7 +84,7 @@
 
 
         </el-aside>
-        <el-main >
+        <el-main>
           <router-view></router-view>
         </el-main>
 
@@ -119,7 +121,7 @@
       },
       toggleNav() {
 
-        if(this.isCollapse) {
+        if (this.isCollapse) {
           this.isCollapse = false;
         } else {
           this.isCollapse = true;
@@ -143,8 +145,7 @@
       // },3500)
 
 
-
-     // 使用sessionStorage模拟登录状态
+      // 使用sessionStorage模拟登录状态
       var login = this.getStorage("login");
       console.log(login);
       if (login == null || login == "0") {
@@ -152,7 +153,7 @@
         this.$router.push({path: "/login"});
       } else {
         console.log("模拟登录成功");
-       }
+      }
 
 
     }
@@ -167,22 +168,21 @@
     color: $fontColor2;
     line-height: 50px;
     background-color: $baseColor1;
-    background-image: linear-gradient(120deg, $baseColor1 10%, #7bbdbc 80%);//background-image: linear-gradient(120deg, $baseColor1 10%, #7bbdbc 100%);
+    background-image: linear-gradient(120deg, $baseColor1 10%, #7bbdbc 80%); //background-image: linear-gradient(120deg, $baseColor1 10%, #7bbdbc 100%);
     background-size: 200% 100%;
-    animation: bg 10s ease-in-out infinite  alternate;
+    animation: bg 10s ease-in-out infinite alternate;
   }
 
-  @keyframes bg{
+  @keyframes bg {
 
-   0%{
-    background-position: 0 0;
-   }
-    100%{
-     background-position: 100% 0;
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 100% 0;
     }
 
   }
-
 
   .frame-header {
     .left {
@@ -247,23 +247,23 @@
     background-color: $baseColor2;
     color: #333;
     width: auto !important;
-    .logo{
+    .logo {
       width: 100%;
       text-align: center;
       padding: 35px 0;
-      img{
+      img {
         width: 40%;
         border-radius: 50%;
-        animation:boxShow 2.5s linear infinite alternate;
+        animation: boxShow 2.5s linear infinite alternate;
       }
     }
   }
 
   @keyframes boxShow {
-    0%{
+    0% {
       box-shadow: 0 0 0px 0px #7b7b7b;
     }
-    100%{
+    100% {
       box-shadow: 0 0 30px 10px #7b7b7b;
     }
 
