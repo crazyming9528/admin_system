@@ -20,6 +20,24 @@
   background-color: #f8f8f8;
 }
 
+.font-color-red{
+  color: #f56c6c;
+}
+.font-color-yellow{
+  color: #e6a23c;
+}
+
+.font-color-green{
+  color: #67c23a;
+}
+.font-color-blue{
+  color: #409eff;
+}
+.text-line{
+  text-decoration:line-through
+}
+
+
 input::-webkit-input-placeholder {
   /* placeholder颜色  */
   color: #cdcdcd;

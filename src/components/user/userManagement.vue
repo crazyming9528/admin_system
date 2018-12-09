@@ -578,10 +578,10 @@
 
               if (res.data.code === 200) {
 
-                this.tips("success", res.data.message)
+                this.tips( res.data.message,"success")
                 this.requestApi("getUser");
               } else {
-                this.tips("warning", res.data.message)
+                this.tips( res.data.message,"warning")
 
               }
             }).catch(
@@ -607,10 +607,10 @@
             }).then((res) => {
               if (res.data.code === 200) {
 
-                this.tips("success", "更新成功！");
+                this.tips("更新成功！","success");
                 this.requestApi("getUser")
               } else {
-                this.tips("warning", res.data.message);
+                this.tips(res.data.message,"warning");
               }
 
             }).catch((error) => {
@@ -627,15 +627,15 @@
             }).then((res) => {
               if (res.data.code === 200) {
 
-                this.tips("success", "删除成功！");
+                this.tips("删除成功！","success");
                 this.requestApi("getUser")
               } else {
-                this.tips("warning", res.data.message);
+                this.tips(res.data.message,"warning");
               }
 
             }).catch((error) => {
 
-              this.tips("error", "系统出错！");
+              this.tips("系统出错！","error");
 
             });
             break;
@@ -680,11 +680,11 @@
                 });
 
               } else {
-                this.tips("warning", res.data.message);
+                this.tips(res.data.message,"warning");
               }
               this.loading = false;
             }).catch((error) => {
-                this.tips("error", "系统出错！");
+              this.tips( "系统出错！","error");
                 console.log(error);
                 this.loading = false;
               }
@@ -714,7 +714,7 @@
               }
 
             }).catch((error) => {
-              this.tips("error", "系统出错！");
+              this.tips( "系统出错！","error");
 
               console.log(error)
 
@@ -740,7 +740,7 @@
 
             }).catch((error) => {
 
-              this.tips("error", "系统出错！");
+              this.tips( "系统出错！","error");
               console.log(error)
 
 
@@ -764,7 +764,7 @@
 
 
             }).catch((error) => {
-              this.tips("error", "系统出错！");
+              this.tips( "系统出错！","error");
               console.log(error);
 
 
@@ -773,7 +773,7 @@
           case "search":
 
             if (this.search === "") {
-              this.tips("warning", "搜索内容不能为空！");
+              this.tips("搜索内容不能为空！","warning");
               return
 
             }
@@ -791,7 +791,7 @@
                 let list = res.data.map.pageInfo.list;
 
                 if (list.length === 0) {
-                  this.tips("info", "没有查询到数据");
+                  this.tips("没有查询到数据","info");
                   this.tableData = [];
                   this.page_total = 0;
                   this.loading = false;
@@ -819,7 +819,7 @@
 
 
               } else if (res.data.code === 500) {
-                this.tips("warning", res.data.message);
+                this.tips(res.data.message,"warning");
 
               }
 
@@ -827,7 +827,7 @@
 
 
             }).catch((error) => {
-              this.tips("error", "系统出错！");
+              this.tips("系统出错！","error");
               console.log(error);
               this.loading = false;
 

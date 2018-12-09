@@ -52,7 +52,7 @@
               label="#">
             </el-table-column>
             <el-table-column
-              prop="name"
+              prop="typeName"
               width="250"
               label="分类名称">
             </el-table-column>
@@ -110,6 +110,7 @@
     data() {
       return {
         loading: false,
+
         addOrEditDialog: {
           display: false,
           action: "",
@@ -122,11 +123,7 @@
           name: "",
           description: "",
         },
-        tableData: [
-          {id: 1, name: "test1", remark: "描述1.............."},
-          {id: 5, name: "test2", remark: "描述2.............."},
-          {id: 3, name: "test3", remark: "描述3.............."},
-        ]
+        tableData: []
       }
     },
     methods: {
@@ -135,11 +132,17 @@
       getNewsType() {
         let data = {
           pageNum: 1,
-          pageSize: 10
+          pageSize: 100
         };
         this.requestApiFnc("/NewsType/getAll", "get", data,
           (res) => {
-            console.log(res)
+            const {data:{code,map:{pageInfo:{list}},message,success}} =res;
+            if(code !==200){
+              this.ele_alert(message,"error");
+              return;
+            }
+            this.tableData=list;
+            // console.log(this.tableData);
           })
       },
 
@@ -159,7 +162,8 @@
           this.addOrEditDialog.action = "edit";
           this.addOrEditDialog.title = "修改分类";
           this.addOrEditDialog.currentData = data;
-          this.form.name = this.addOrEditDialog.currentData.name;
+          this.form.id=this.addOrEditDialog.currentData.id;
+          this.form.name = this.addOrEditDialog.currentData.typeName;
           this.form.description = this.addOrEditDialog.currentData.remark;
           this.addOrEditDialog.display = true;
         } else if (type === "delete") {
@@ -189,9 +193,15 @@
         this.ele_confirm(`确定删除吗？`, `warning`, () => {
 
             this.requestApiFnc("/NewsType/delete", "delete", {id: this.addOrEditDialog.currentData.id}, (res) => {
-              this.tips('success', '删除成功！')
+              const {data:{code,map,message,success}} =res;
+              if(code !==200){
+                this.ele_alert(message,"error");
+                return;
+              }
+              this.tips( message,'success',);
+              this.getNewsType();
             });
-          }, () => this.tips('info', '已取消删除！')
+          }, () => this.tips( '已取消删除！','info')
         );
 
         console.log(this.addOrEditDialog.currentData);
@@ -209,7 +219,14 @@
 
         this.requestApiFnc("/NewsType/add", "post", data,
           (res) => {
-            console.log(res)
+            console.log(res);
+            let{data:{code,map,message,success}} =res;
+            if(code !==200){
+              this.ele_alert(message,"error");
+              return;
+            }
+
+            this.getNewsType()
           })
       },
       updateType() {
@@ -223,11 +240,14 @@
           remark: this.form.description,
         };
         this.requestApiFnc("/NewsType/update", "put", data, (res) => {
-        let{code,map,message,success} =res.data
+        let{data:{code,map,message,success}} =res;
 
           if(code !==200){
             this.ele_alert(message,"error");
+            return;
           }
+          this.tips(message,"success");
+          this.getNewsType()
         });
       }
     },

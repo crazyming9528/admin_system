@@ -308,13 +308,13 @@
             remark:this.form_role.description,
           }).then((res) => {
             if(res.data.code===200){
-              this.tips("success","添加成功！")
+              this.tips("添加成功！","success")
               this.requestApi("getAllRole");
             }
             console.log(res);
           }).catch((error) => {
 
-            this.tips("error","添加角色失败！")
+            this.tips("添加角色失败！","error")
             console.log(error);
           })
 
@@ -326,12 +326,12 @@
               remark:this.form_role.description,
           }).then((res) => {
             if(res.data.code===200){
-              this.tips("success","修改成功！")
+              this.tips("修改成功！","success");
               this.requestApi("getAllRole");
             }
             console.log(res);
           }).catch((error) => {
-            this.tips("error","修改失败！")
+            this.tips("修改失败！","error")
             console.log(error);
           })
         } else if (action === "delete") {
@@ -342,12 +342,12 @@
             }
           }).then((res) => {
             if(res.data.code===200){
-              this.tips("success","删除成功！")
+              this.tips("删除成功！","success");
               this.requestApi("getAllRole");
             }
             console.log(res);
           }).catch((error) => {
-            this.tips("error","删除失败！")
+            this.tips("删除失败！","error")
             console.log(error);
 
           })

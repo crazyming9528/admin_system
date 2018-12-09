@@ -423,6 +423,7 @@
   @import "../../assets/styles/base";
 
   .c-main {
+    overflow: hidden;
 
     .dataVisualization {
 

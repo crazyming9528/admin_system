@@ -27,6 +27,7 @@
     height: 100%;
   }
   body{
+    overflow: hidden;
     background-color: #f2f2f2;
   }
   /*.el-main{*/

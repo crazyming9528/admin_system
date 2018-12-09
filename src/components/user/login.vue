@@ -41,12 +41,12 @@
       methods:{
           login(){
             this.setStorage("login","1");
-           this.tips("success","登录成功");
+           this.tips("登录成功","success");
             this.$router.push({path: "/home"});
           },
 
         register(){
-          this.tips("warning","注册还没有做");
+          this.tips("注册还没有做","warning");
         },
 
       },

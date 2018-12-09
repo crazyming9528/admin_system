@@ -1,5 +1,6 @@
 <template>
   <div class="c-main wow fadeIn" style="">
+    <TableTools></TableTools>
     <el-row class="topArea wow fadeInDown" data-wow-delay="0.5s">
       <el-col :span="24">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -19,6 +20,7 @@
 
       <el-row class="panelArea ">
         <el-col :span="24">
+          <TableTools></TableTools>
           <!--:header-cell-style="{background:' #33a0d7',color:'white'}"-->
           <el-table
             v-loading="loading"
@@ -76,9 +78,9 @@
               label="操作"
               width="100">
               <template slot-scope="scope">
-                <el-button @click="operateDialog('edit',scope.row)" type="text" size="small">编辑</el-button>
+                <el-button @click="editNews(scope.row)" type="text" size="small">编辑</el-button>
 
-                <el-button type="text" size="small" @click="operateDialog('delete',scope.row)">删除</el-button>
+                <el-button type="text" size="small" @click="deleteNews(scope.row)">删除</el-button>
               </template>
             </el-table-column>
 
@@ -89,43 +91,121 @@
 
       </el-row>
 
+      <el-row class="panelArea">
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40,50]"
+            :page-size="page_size"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="page_total">
+          </el-pagination>
+        </div>
+
+
+      </el-row>
+
 
     </div>
   </div>
 </template>
 
 <script>
+
+  import TableTools from  "../childComponents/tableTools";
+
   export default {
     name: "newsManagement",
+    components:{
+      TableTools,
+    },
     data() {
       return {
+
         loading: false,
+        currentPage: 1,//分页当前页
+        page_total: 0,//分页 总数
+        page_size: 10,//分页  一页的大小
         tableData: []
 
       }
     },
     methods: {
+      /**
+       *改变分页  页面显示条数
+       * @param val
+       */
+      handleSizeChange(val) {
+        this.page_size = val;
+        this.currentPage = 1;
+
+
+       this.getNewsList();
+
+      },
+      /**
+       * 切换分页
+       * @param val
+       */
+      handleCurrentChange(val) {
+        this.currentPage = val;
+
+       this.getNewsList();
+
+      },
+
 
       getNewsList() {
         let data = {
-          pageNum: 1,
-          pageSize: 10
-        }
+          pageNum: this.currentPage,
+          pageSize: this.page_size
+        };
 
         this.requestApiFnc("/news/getAll", "get", data, (res) => {
 
-          let {data: {code: status, map: {pageInfo: {list, total}}}} = res;
+          let {data: {code: status, map: {pageInfo: {list, total}},message}} = res;
 
           if (status === 200) {
             console.log(status, data, list, total);
             this.tableData = list;
+            this.page_total=total;
 
+          }else {
+            this.ele_alert(message,"error");
           }
 
         })
 
       },
       operateDialog(){
+
+      },
+
+      editNews(data){
+        this.$router.push({ path: '/releaseNews', query: {action:"edit",newsId: data.id }});
+      },
+
+      deleteNews(news){
+
+        this.ele_confirm("你确定删除这篇新闻吗？",`warning`,()=>{
+
+          console.log(news.id);
+          this.requestApiFnc("/news/delete","delete",{newsId:news.id},(res)=>{
+            const {data:{code,message}}=res
+;
+            if(code===200){
+              this.tips(message,"success");
+              this.getNewsList();
+            }else {
+              this.ele_alert(message,"error")
+            }
+
+
+          })
+
+        },()=>this.tips("你已取消删除！"))
 
       }
 
