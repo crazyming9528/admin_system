@@ -1,6 +1,6 @@
 <template>
   <div class="c-main wow fadeIn" style="">
-    <TableTools></TableTools>
+    <TableTools @refresh="refresh"></TableTools>
     <el-row class="topArea wow fadeInDown" data-wow-delay="0.5s">
       <el-col :span="24">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -20,7 +20,7 @@
 
       <el-row class="panelArea ">
         <el-col :span="24">
-          <TableTools></TableTools>
+          <TableTools style="margin-bottom: 20px" @refresh="refresh"></TableTools>
           <!--:header-cell-style="{background:' #33a0d7',color:'white'}"-->
           <el-table
             v-loading="loading"
@@ -155,8 +155,10 @@
        this.getNewsList();
 
       },
-
-
+      refresh(value){
+        console.log(value);
+        this.getNewsList()
+      },
       getNewsList() {
         let data = {
           pageNum: this.currentPage,
