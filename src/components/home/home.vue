@@ -409,9 +409,7 @@
 
     },
     beforeDestroy(){
-
       clearInterval(this.getSize);
-
     },
     created() {
       this.toTop();

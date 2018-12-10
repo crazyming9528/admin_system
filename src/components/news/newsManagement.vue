@@ -1,6 +1,5 @@
 <template>
   <div class="c-main wow fadeIn" style="">
-    <TableTools @refresh="refresh"></TableTools>
     <el-row class="topArea wow fadeInDown" data-wow-delay="0.5s">
       <el-col :span="24">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -17,10 +16,12 @@
           <span class="description">校园新闻资讯的管理</span>
         </el-col>
       </el-row>
+      <TableTools style="margin-bottom: 20px" @refresh="refresh" @toggleDisplay="toggleDisplay()"></TableTools>
+      <div class="tableWrapper" v-if="displayInfo==='table'">
 
       <el-row class="panelArea ">
         <el-col :span="24">
-          <TableTools style="margin-bottom: 20px" @refresh="refresh"></TableTools>
+
           <!--:header-cell-style="{background:' #33a0d7',color:'white'}"-->
           <el-table
             v-loading="loading"
@@ -31,6 +32,7 @@
             <el-table-column
               width="50"
               type="index"
+              align="center"
 
               label="#">
             </el-table-column>
@@ -59,16 +61,23 @@
                   min-width="120"
                   prop="status">
                 </el-table-column>
+
+            <el-table-column
+
+              label="发布时间"
+              min-width="150"
+              prop="createTime">
+            </el-table-column>
             <el-table-column
 
               label="阅读数"
-              min-width="120"
+              min-width="100"
               prop="viewCount">
             </el-table-column>
             <el-table-column
 
               label="点赞数"
-              min-width="120"
+              min-width="100"
               prop="likeCount">
             </el-table-column>
 
@@ -90,7 +99,6 @@
         </el-col>
 
       </el-row>
-
       <el-row class="panelArea">
         <div class="block">
           <el-pagination
@@ -107,23 +115,65 @@
 
       </el-row>
 
-
     </div>
-  </div>
+
+
+
+      <div class="chartWrapper" v-if="displayInfo==='chart'">
+      <el-row class="panelArea">
+查询周期：<input type="text" placeholder="  按年  按月  按日">
+
+        查询时间范围：<input type="text" placeholder=" 开始时间"> - <input type="text" placeholder="结束时间">
+
+        <button>查询</button>
+
+      </el-row>
+      <el-row class="panelArea echartWrapper">
+
+       <div class="echart">
+         <EchartComponent title="阅读量排行榜" subtext="新闻阅读量排行榜" type="rank"></EchartComponent>
+
+       </div>
+        <div class="echart">
+          <EchartComponent title="点赞量排行榜" subtext="新闻点赞量量排行榜" type="rank"></EchartComponent>
+        </div>
+
+        <div class="echart">
+          <EchartComponent title="新闻模块各周期阅读量分析-折线图" subtext="可以按年 按月 按天的 周期 来进行查询" type="line"></EchartComponent>
+
+        </div>
+        <div class="echart">
+          <EchartComponent title="新闻模块各周期阅读量分析-柱状图" subtext="可以按年 按月 按天的 周期 来进行查询" type="bar"></EchartComponent>
+        </div>
+
+
+      </el-row>
+
+      </div>
+
+
+</div>
+</div>
+
+
+
+
 </template>
 
 <script>
 
   import TableTools from  "../childComponents/tableTools";
+  import EchartComponent from "../childComponents/echartComponent";
 
   export default {
     name: "newsManagement",
     components:{
       TableTools,
+      EchartComponent
     },
     data() {
       return {
-
+        displayInfo:"table",
         loading: false,
         currentPage: 1,//分页当前页
         page_total: 0,//分页 总数
@@ -171,7 +221,11 @@
 
           if (status === 200) {
             console.log(status, data, list, total);
-            this.tableData = list;
+            this.tableData = list.map((item)=>{
+
+              item.createTime=this.showTime(item.createTime);
+              return item;
+            });
             this.page_total=total;
 
           }else {
@@ -209,6 +263,15 @@
 
         },()=>this.tips("你已取消删除！"))
 
+      },
+      toggleDisplay(){
+
+        if(this.displayInfo==="table"){
+          this.displayInfo="chart"
+        }else {
+          this.displayInfo="table"
+        }
+
       }
 
     },
@@ -227,6 +290,19 @@
   @import "../../assets/styles/base";
 
   .c-main {
+
+    .echartWrapper{
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      .echart{
+        width: 50%;
+        height: 400px;
+        padding: 5px;
+        box-sizing: border-box;
+
+      }
+    }
 
   }
 </style>

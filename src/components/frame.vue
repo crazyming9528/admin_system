@@ -4,7 +4,7 @@
       <el-header class="frame-header">
         <div class="left wow fadeInLeft">
           <div class="logo" v-show="isCollapse"><img src="../assets/logo.png" alt="logo"/></div>
-          <span><em>成信大</em> 校园服务平台管理系统</span>
+          <span><em>CUIT</em> 校园服务平台管理系统</span>
           <el-tooltip class="item" effect="dark" content="点击这里可以展开和收起侧栏菜单~" manual value placement="right-start">
             <el-button style="margin-left: 20px;font-weight: bold" type="text" size="mini" @click="toggleNav"
                        icon="el-icon-menu">切换菜单
