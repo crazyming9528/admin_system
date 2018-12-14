@@ -15,6 +15,7 @@ import 'es6-promise/auto'
 import './assets/styles/element-variables.scss'
 import store from './store/store.js'
 import publicFunction from './publicFunction'
+import { Loading } from 'element-ui';
 
 
 Vue.use(mavonEditor)
@@ -37,6 +38,74 @@ let http = axios.create({
   }
 });
 Vue.prototype.$axios=http;
+
+
+
+
+let needLoadingRequestCount = 0;
+let lo;
+function showFullScreenLoading() {
+  if (needLoadingRequestCount === 0) {
+    startLoading()
+  }
+  needLoadingRequestCount++
+}
+
+function startLoading() {
+  document.querySelector(".el-main").style.overflow="hidden";//当页面纵向内容多时，，加载动画无法覆盖住全部页面，，暂未找到解决方法，暂时先这样 隐藏掉滚动条
+  lo = Loading.service({
+    lock: true,
+    target:document.querySelector(".el-main"),
+    text: '拼命加载中...',
+    spinner: 'el-icon-loading',
+    // background: 'rgba(0, 0, 0, 0.8)',
+    background:'white',
+
+  })
+}
+
+
+function tryHideFullScreenLoading() {
+  if (needLoadingRequestCount <= 0) return;
+  needLoadingRequestCount--;
+  if (needLoadingRequestCount === 0) {
+    endLoading()
+  }
+}
+
+
+
+function endLoading() {
+  lo.close()
+  document.querySelector(".el-main").style.overflow="auto";
+}
+
+// 添加请求拦截器
+http.interceptors.request.use(function (config) {
+
+  showFullScreenLoading()
+
+
+  // 在发送请求之前做些什么
+  return config;
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error);
+});
+
+// 添加响应拦截器
+http.interceptors.response.use(function (response) {
+
+  setTimeout(()=>{
+    tryHideFullScreenLoading();
+  },1500);
+
+  // 对响应数据做点什么
+  return response;
+}, function (error) {
+  // 对响应错误做点什么
+  return Promise.reject(error);
+});
 
 
 

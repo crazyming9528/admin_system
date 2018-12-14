@@ -34,7 +34,7 @@
               <div class="li_item order">{{index+1}}</div>
               <div class="li_item rank"><input min="0" v-model.trim="item.rank" type="number" :class="{'text-line':!item.status}"></div>
               <div class="li_item title"><input v-model.trim="item.newsTitle" type="text" placeholder="请输入标题" :class="{'text-line':!item.status}"></div>
-              <div class="li_item url"><input v-model.trim="item.url" type="text"
+              <div class="li_item url"><input v-model.trim="item.rUrl" type="text"
                                               placeholder="链接需加上 http:// 或 https://" :class="{'text-line':!item.status}">
               </div>
               <div class="li_item imgUrl"><input v-model.trim="item.imgUrl" type="text" placeholder="请输入图片链接" :class="{'text-line':!item.status}"></div>
@@ -68,64 +68,8 @@
     name: "slideshow-management",
     data() {
       return {
-        sliderData: [
-          //
-          // {
-          //   id: 1,
-          //   rank: 0,
-          //   newsTitle: "成信校园服务",
-          //   url: "http://www.baidu.com",
-          //   imgUrl: "https://www.baidu.com/img/bd_logo1.png",
-          //   remark: "这里是描述啊。",
-          //   status: 0
-          // },
-          // {
-          //   id: 2,
-          //   rank: 1,
-          //   newsTitle: "成信校园服务",
-          //   url: "http://www.baidu.com",
-          //   imgUrl: "https://www.baidu.com/img/bd_logo1.png",
-          //   remark: "这里是描述啊。",
-          //   status: 1
-          // },
-          // {
-          //   id: 3,
-          //   rank: 5,
-          //   newsTitle: "成信校园服务",
-          //   url: "http://www.baidu.com",
-          //   imgUrl: "https://www.baidu.com/img/bd_logo1.png",
-          //   remark: "这里是描述啊。",
-          //   status: 0
-          // },
-          // {
-          //   id: 4,
-          //   rank: 5,
-          //   newsTitle: "成信校园服务",
-          //   url: "http://www.baidu.com",
-          //   imgUrl: "https://www.baidu.com/img/bd_logo1.png",
-          //   remark: "这里是描述啊。",
-          //   status: 0
-          // },
-          // {
-          //   id: 5,
-          //   rank: 5,
-          //   newsTitle: "成信校园服务",
-          //   url: "http://www.baidu.com",
-          //   imgUrl: "https://www.baidu.com/img/bd_logo1.png",
-          //   remark: "这里是描述啊。",
-          //   status: 1
-          // },
-          // {
-          //   id: 5,
-          //   rank: 5,
-          //   newsTitle: "成信校园服务",
-          //   url: "http://www.baidu.com",
-          //   imgUrl: "https://www.baidu.com/img/bd_logo1.png",
-          //   remark: "这里是描述啊。",
-          //   status: 1
-          // }
-
-        ]
+        sliderData: [],
+        fullscreenLoading:false
 
       }
     },
@@ -141,7 +85,7 @@
                 this.ele_alert(`序号只能是数字！`,`warning`);
                 check = false;
               }
-              if (this.sliderData[i].newsTitle === "" || this.sliderData[i].url === "" || this.sliderData[i].imgUrl === "" || this.sliderData[i].remark === "") {
+              if (this.sliderData[i].newsTitle === "" || this.sliderData[i].rUrl === "" || this.sliderData[i].imgUrl === "" || this.sliderData[i].remark === "") {
                 this.ele_alert(`你必须完整填写这条轮播图数据才能启用它！`,`warning`);
                 check = false;
               }
@@ -158,8 +102,6 @@
 
       },
       getSlider(){
-
-
         this.requestApiFnc("/NewsTurn/getAll","get",null,(res)=>{
 
           const {data:{code,map:{turn},message,success}} =res;
@@ -170,6 +112,7 @@
           this.sliderData=turn;
 
         })
+
 
       },
       addSlider() {
@@ -195,8 +138,8 @@
 
           this.sliderData.push({
             rank: temp[temp.length - 1] + 1,
-            title: "",
-            url: "",
+            newsTitle: "",
+            rUrl: "",
             imgUrl: "",
             remark: "",
             status: 0
@@ -221,7 +164,7 @@
             this.ele_alert(`序号只能是数字！`)
             check = false;
           }
-          if (item.newsTitle === "" || item.url === "" || item.imgUrl === "" || item.remark === "") {
+          if (item.newsTitle === "" || item.rUrl === "" || item.imgUrl === "" || item.remark === "") {
 
             check = false;
           }
@@ -230,8 +173,8 @@
         if (check) {
           // this.tips("保存成功！","success");
 
-          this.requestApiFnc("/NewsTurn/update","put",{
-            turn:this.sliderData
+          this.requestApiFnc("/NewsTurn/addList","post",{
+            request:this.sliderData
           },(res)=>{
             console.log(res);
             const {data:{code,map,message,success}} =res;
@@ -244,7 +187,9 @@
             this.getSlider();
 
 
-          },error=> console.log(error))
+          },error=>console.log(error))
+
+
         }else {
           this.ele_alert(`请将轮播图数据填写完整后再保存！`,  `warning`);
         }

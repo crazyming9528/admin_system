@@ -97,21 +97,25 @@ exports.install = function (Vue, options) {
       this.$axios.get(url, {params: data}).then((res) => {
         successCallback(res)
       }).catch((error) => {
+        if(errorCallback){
+          errorCallback(error)
+        }
         if(error.response){
           this.ele_alert("系统错误，请稍后再试！ [Type:"+type+" , Status code:"+error.response.status+"]","error");
         }else {
           this.ele_alert("未知错误！","error");
           console.log(error);
         }
-        if(errorCallback){
-          errorCallback(error)
-        }
+
 
       });
     } else if (type === "post") {
       this.$axios.post(url, data).then((res) => {
         successCallback(res)
       }).catch((error) => {
+        if(errorCallback){
+          errorCallback(error)
+        }
         if(error.response){
           this.ele_alert("系统错误，请稍后再试！ [Type:"+type+" , Status code:"+error.response.status+"]","error");
         }else {
@@ -119,38 +123,38 @@ exports.install = function (Vue, options) {
           console.log(error);
         }
 
-        if(errorCallback){
-          errorCallback(error)
-        }
+
       });
     } else if (type === "put") {
       this.$axios.put(url, data).then((res) => {
 
         successCallback(res)
       }).catch((error) => {
+        if(errorCallback){
+          errorCallback(error)
+        }
         if(error.response){
           this.ele_alert("系统错误，请稍后再试！ [Type:"+type+" , Status code:"+error.response.status+"]","error");
         }else {
           this.ele_alert("未知错误！","error");
           console.log(error);
         }
-        if(errorCallback){
-          errorCallback(error)
-        }
+
       });
     } else if (type === "delete") {
       this.$axios.delete(url, {params: data}).then((res) => {
         successCallback(res);
       }).catch((error) => {
+        if(errorCallback){
+          errorCallback(error)
+        }
         if(error.response){
           this.ele_alert("系统错误，请稍后再试！ [Type:"+type+" , Status code:"+error.response.status+"]","error");
         }else {
           this.ele_alert("未知错误！","error");
           console.log(error);
         }
-        if(errorCallback){
-          errorCallback(error)
-        }
+
       });
     } else {
       this.ele_alert("请求类型错误！","error")
