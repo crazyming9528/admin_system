@@ -230,7 +230,7 @@
         if (check) {
           // this.tips("保存成功！","success");
 
-          this.requestApiFnc("/NewsTurn/update","post",{
+          this.requestApiFnc("/NewsTurn/update","put",{
             turn:this.sliderData
           },(res)=>{
             console.log(res);
