@@ -30,11 +30,11 @@ let http = axios.create({
 
 // 添加响应拦截器
   http.interceptors.response.use(function (response) {
-
+    // globalLoading.tryHideFullScreenLoading();
     setTimeout(()=>{
       // tryHideFullScreenLoading();
       globalLoading.tryHideFullScreenLoading();
-    },1500);
+    },500);
 
     // 对响应数据做点什么
     return response;

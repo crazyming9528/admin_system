@@ -38,8 +38,8 @@
           </el-form-item>
           <el-form-item label="分类">
             <el-select v-model="form.type" placeholder="请选择分类">
-              <el-option label="分类一" value="shanghai"></el-option>
-              <el-option label="分类二" value="beijing"></el-option>
+              <el-option v-for="nt in newsType" :key="nt.id" :label="nt.typeName" :value="nt.id"></el-option>
+
             </el-select>
           </el-form-item>
           <el-form-item label="摘要">
@@ -88,8 +88,9 @@
           digest:"摘要",
           content:"",
           contentHtml:"",
-          option:["允许评论"]
+          option:["允许评论"],
         },
+        newsType:[]
 
       }
     },
@@ -129,24 +130,41 @@
         this.form.contentHtml=render;
 
      },
-
-
+      getNewsType() {
+        let data = {
+          pageNum: 1,
+          pageSize: 100
+        };
+        this.requestApiFnc("/NewsType/getAll", "get", data,
+          (res) => {
+            const {data:{code,map:{pageInfo:{list}},message,success}} =res;
+            if(code !==200){
+              this.ele_alert(message,"error");
+              return;
+            }
+            this.newsType=list;
+            // console.log(this.tableData);
+          })
+      },
       onSubmit() {
         console.log(this.$refs.md);
 
-        this.$axios.post("/news/add",{
+       const data={
+         title:this.form.title,
+         author:"crazyming",
+         type:"默认",
+         // type:this.form.type,
+         digest:this.form.digest,
+         firstImg:this.form.firstImg,
+         content:this.form.content,
+         contentHtml:this.form.contentHtml
+       };
 
-            title:this.form.title,
-            author:"crazyming",
-            type:"默认",
-            digest:this.form.digest,
-            firstImg:this.form.firstImg,
-            content:this.form.content,
-            contentHtml:this.form.contentHtml,
 
-        }).then((res)=>{
-          console.log(res);
-        })
+       this.requestApiFnc("/news/add","post",data,()=>{
+
+         this.ele_alert("发布新闻成功！","success",()=> this.$router.push({path: "/newsManagement"}))
+       })
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
@@ -166,6 +184,7 @@
     },
     created() {
       this.toTop();
+      this. getNewsType();
     }
   }
 </script>
