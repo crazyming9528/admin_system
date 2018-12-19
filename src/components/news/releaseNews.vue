@@ -19,34 +19,33 @@
 
 
       <el-row class="panelArea ">
-        <el-form ref="form" :model="form" label-width="80px">
+        <el-form :model="form" label-width="80px" ref="form">
           <el-form-item label="标题">
             <el-input v-model="form.title"></el-input>
           </el-form-item>
           <el-form-item style="position: relative">
             <el-upload
               :action="uploadUrl"
-              list-type="picture-card"
-              :multiple="false"
               :limit="1"
-              :on-success="uploadSuccess"
+              :multiple="false"
               :on-error="uploadError"
-              :on-remove="handleRemove">
+              :on-remove="handleRemove"
+              :on-success="uploadSuccess"
+              list-type="picture-card">
               <i class="el-icon-plus"></i>
             </el-upload>
 
           </el-form-item>
           <el-form-item label="分类">
-            <el-select v-model="form.type" placeholder="请选择分类">
-              <el-option v-for="nt in newsType" :key="nt.id" :label="nt.typeName" :value="nt.id"></el-option>
-
+            <el-select placeholder="请选择分类" v-model="form.type">
+              <el-option :key="nt.id" :label="nt.typeName" :value="nt.id" v-for="nt in newsType"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="摘要">
             <el-input type="textarea" v-model="form.digest"></el-input>
           </el-form-item>
           <el-form-item label="内容">
-            <mavon-editor style="height: 400px"  ref=md @imgAdd="$imgAdd" @imgDel="$imgDel" @change="getHtmlContent" v-model="form.content"></mavon-editor>
+            <mavon-editor @change="getHtmlContent"  @imgAdd="$imgAdd" @imgDel="$imgDel" ref=md style="height: 400px" v-model="form.content"></mavon-editor>
             <!--<el-input type="textarea" v-model="form.content"></el-input>-->
           </el-form-item>
 
@@ -58,8 +57,9 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" size="small" @click="onSubmit">发布资讯</el-button>
-            <el-button type="success" size="small" @click="onSubmit">保存草稿</el-button>
+            <button @click="moni()">模拟</button>
+            <el-button @click="onSubmit(1)" size="small" type="primary">发布资讯</el-button>
+            <el-button @click="onSubmit(0)" size="small" type="success">保存草稿</el-button>
             <el-button size="small">取消</el-button>
           </el-form-item>
         </el-form>
@@ -85,7 +85,7 @@
           title: '',
           firstImg:"",
           type: '',
-          digest:"摘要",
+          digest:"",
           content:"",
           contentHtml:"",
           option:["允许评论"],
@@ -146,31 +146,93 @@
             // console.log(this.tableData);
           })
       },
-      onSubmit() {
-        console.log(this.$refs.md);
+      moni(){
+
+        let da=[
+          "性感宋波 在线改BUG",
+          "追光的人，身披万丈光芒",
+          "一辈子很短，要欢喜",
+          "愿所有的久别重逢都是别来无恙​​​​",
+          "往上攀，总能登顶",
+          "华为拿下25份5G商业合同全球第一",
+          "俄军新型武器可保俄十年安全",
+          "性感宋波 在线改BUG",
+          "性感宋波 在线改BUG",
+          "性感宋波 在线改BUG",
+        ]
+
+     setInterval(()=>{
+
+       let discuss;
+       let important;
+
+       this.form.option.indexOf("允许评论") !== -1 ? discuss = 1 : discuss = 0;
+       this.form.option.indexOf("置顶") !== -1 ? important = 1 : important = 0;
+
+       const data={
+         title:da[Math.floor(Math.random()*10)] + Math.floor(Math.random()*10)+Math.floor(Math.random()*10),
+         author:"3f3ff415-b27f-46cd-bf4d-17b8b14836a8",
+         // type:"默认",
+         type:"f01b4f42-7f96-4235-acc1-1d1ea7155b98",
+         digest:"测试摘要测试摘要测试摘要测试摘要测试摘要",
+         firstImg:"http://120.78.149.155:8040/1545232360678.jpeg",
+         content:"测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容![croppedtimg.jpg](http://120.78.149.155:8040/1545232379678.jpeg)",
+         contentHtml:"<p>测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容<img src='http://120.78.149.155:8040/1545232379678.jpeg' alt='croppedtimg.jpg' /></p>",
+         status:1,//type 1 发布文章  type 0 保存草稿
+         discuss,
+         important
+       };
+       this.requestApiFnc("/news/add","post",data,(res)=>{
+         let {data:{code,map,message}} = res;
+         if (code===200){
+           this.tips("发布新闻成功！","success");
+           // this.ele_alert("发布新闻成功！","success",()=> this.$router.push({path: "/newsManagement"}));
+         }else {
+           this.ele_alert(message,"error");
+         }
+       })
+
+     },1500)
+
+      },
+      onSubmit(type) {
+        // console.log(this.$refs.md);
+
+        let discuss;
+        let important;
+
+ this.form.option.indexOf("允许评论") !== -1 ? discuss = 1 : discuss = 0;
+ this.form.option.indexOf("置顶") !== -1 ? important = 1 : important = 0;
 
        const data={
          title:this.form.title,
-         author:"crazyming",
-         type:"默认",
-         // type:this.form.type,
+         author:"3f3ff415-b27f-46cd-bf4d-17b8b14836a8",
+         // type:"默认",
+         type:this.form.type,
          digest:this.form.digest,
          firstImg:this.form.firstImg,
          content:this.form.content,
-         contentHtml:this.form.contentHtml
+         contentHtml:this.form.contentHtml,
+         status:type,//type 1 发布文章  type 0 保存草稿
+         discuss,
+         important
        };
 
 
-       this.requestApiFnc("/news/add","post",data,()=>{
-
-         this.ele_alert("发布新闻成功！","success",()=> this.$router.push({path: "/newsManagement"}))
+       this.requestApiFnc("/news/add","post",data,(res)=>{
+         let {data:{code,map,message}} = res;
+         if (code===200){
+           this.ele_alert("发布新闻成功！","success",()=> this.$router.push({path: "/newsManagement"}));
+         }else {
+           this.ele_alert(message,"error");
+         }
        })
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       uploadSuccess(response, file, fileList){
-        console.log(response,file,fileList)
+        console.log(response,file,fileList);
         this.form.firstImg = window.CUIT_server.API_ROOT+"/"+response.map.url;
         console.log(this.form.firstImg);
       },

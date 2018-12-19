@@ -68,8 +68,7 @@
               <el-menu-item index="/releaseNews">新闻发布</el-menu-item>
               <el-menu-item index="/newsManagement">新闻管理</el-menu-item>
               <el-menu-item index="/newsType">新闻分类</el-menu-item>
-              <!--<el-menu-item index="/commentsManagement">评论管理</el-menu-item>-->
-              <el-menu-item index="/slideshowManagement">评论管理</el-menu-item>
+              <el-menu-item index="/comments">评论管理</el-menu-item>
               <el-menu-item index="/slideshowManagement">轮播图管理</el-menu-item>
             </el-submenu>
             <el-submenu index="4">

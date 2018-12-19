@@ -1,5 +1,5 @@
 window.CUIT_server = {
-  TIMEOUT: 120000,
+  TIMEOUT: 20000,
   API_ROOT: 'http://120.78.149.155:8040'
 };
 

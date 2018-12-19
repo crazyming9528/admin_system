@@ -8,6 +8,7 @@ import NewsManagement from '@/components/news/newsManagement'
 import ReleaseNews from '@/components/news/releaseNews'
 import SlideshowManagement from '@/components/news/slideshow-management'
 import NewsCatalogue from '@/components/news/newsCatalogue'
+import CommentManagement from '@/components/news/commentsManagement'
 
 
 
@@ -58,7 +59,13 @@ export default new Router({
           path: 'newsType',
           name: 'newsType',
           component: NewsCatalogue
-        },{
+        },
+        {
+          path: 'comments',
+          name: 'comments',
+          component:CommentManagement
+        },
+        {
 
           path: 'userManagement',
           name: 'userManagement',
