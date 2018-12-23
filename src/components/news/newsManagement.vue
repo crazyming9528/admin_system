@@ -17,6 +17,7 @@
         </el-col>
       </el-row>
       <TableTools style="margin-bottom: 20px" :searchInfo="searchInfo" @search="search" @refresh="refresh"
+                  @addData="addData"
                   @toggleDisplay="toggleDisplay()"></TableTools>
       <div class="tableWrapper" v-if="displayInfo==='table'">
         <el-row  class="panelArea">
@@ -345,6 +346,9 @@
           this.displayInfo = "table"
         }
 
+      },
+      addData(){
+        this.$router.push({path: "/releaseNews"});
       }
 
     },
