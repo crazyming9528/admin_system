@@ -183,7 +183,8 @@
               return;
             }
 
-          this.tips(message,"success");
+          // this.tips(message,"success");
+            this.ele_alert(message,"success");
             this.getSlider();
 
 

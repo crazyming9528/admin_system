@@ -19,6 +19,16 @@
       <TableTools style="margin-bottom: 20px" :searchInfo="searchInfo" @search="search" @refresh="refresh"
                   @toggleDisplay="toggleDisplay()"></TableTools>
       <div class="tableWrapper" v-if="displayInfo==='table'">
+        <el-row  class="panelArea">
+          <el-col :span="24">
+          <el-alert
+            v-if="this.searchData.length"
+            title="以下是搜索结果："
+            type="info"
+            :closable="false">
+          </el-alert>
+          </el-col>
+        </el-row>
 
         <el-row class="panelArea ">
           <el-col :span="24">
@@ -181,7 +191,7 @@
           {name: "author", label: "作者", inputType: "text", placeholder: "请输入作者名称", value: ""},
           {name: "timeRange", label: "时间区间", inputType: "text", placeholder: "请输入时间区间", value: ""},
         ],
-        searchData:[]
+        searchData:[],
 
       }
     },
@@ -195,7 +205,11 @@
         this.currentPage = 1;
 
 
-        this.getNewsList();
+        if(this.searchData.length>0){
+          this.search();
+        }else {
+          this.getNewsList();
+        }
 
       },
       /**
@@ -205,7 +219,12 @@
       handleCurrentChange(val) {
         this.currentPage = val;
 
-        this.getNewsList();
+
+        if(this.searchData.length>0){
+          this.search();
+        }else {
+          this.getNewsList();
+        }
 
       },
       resetPaging() {
@@ -213,12 +232,16 @@
         this.page_size = 10;
       },
       search(data) {
-        this.searchData=data;
-        this.resetPaging();
+        console.log("search")
+        if(data){
+          this.searchData=data;
+          this.resetPaging();
+        }
+
         let title, author, timeRange, startTime, endTime;
-        title = data[0];
-        author = data[1];
-        timeRange = data[2];
+        title = this.searchData[0];
+        author = this.searchData[1];
+        timeRange = this.searchData[2];
 
         if (!title && !author && !timeRange) {
           this.ele_alert("你没有输入任何搜索选项哦~", "warning");
@@ -260,10 +283,6 @@
       },
       getNewsList() {
 
-        if(this.searchData.length>0){
-          this.search();
-          return;
-        }
         let data = {
           pageNum: this.currentPage,
           pageSize: this.page_size
@@ -361,3 +380,4 @@
 
   }
 </style>
+                                                                                                 

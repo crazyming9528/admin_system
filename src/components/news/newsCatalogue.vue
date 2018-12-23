@@ -16,24 +16,27 @@
           <span class="description">校园新闻资讯分类的管理</span>
         </el-col>
       </el-row>
+      <TableTools style="margin-bottom: 20px"   @refresh="refresh" @addData="addData"
+                  @toggleDisplay="toggleDisplay()"></TableTools>
 
       <el-row class="panelArea ">
+
 
         <!--<el-col :span="8" :offset="12" :md="8" :lg="8" :xs="24" :sm="24">-->
 
         <!--</el-col>-->
-        <el-col :offset="20" :span="4" :md="4" :lg="4" :xs="24" :sm="24"
-                style="text-align: left;box-sizing: border-box;padding-left: 25px">
-          <el-tooltip content="刷新" placement="top">
-            <el-button type="primary" icon="el-icon-refresh" @click="refresh" size="small"
-                       plain></el-button>
-          </el-tooltip>
+        <!--<el-col :offset="20" :span="4" :md="4" :lg="4" :xs="24" :sm="24"-->
+                <!--style="text-align: left;box-sizing: border-box;padding-left: 25px">-->
+          <!--<el-tooltip content="刷新" placement="top">-->
+            <!--<el-button type="primary" icon="el-icon-refresh" @click="refresh" size="small"-->
+                       <!--plain></el-button>-->
+          <!--</el-tooltip>-->
 
-          <el-tooltip content="新增" placement="top">
-            <el-button type="primary" @click="operateDialog('add')" icon="el-icon-plus" size="small" plain></el-button>
-          </el-tooltip>
+          <!--<el-tooltip content="新增" placement="top">-->
+            <!--<el-button type="primary" @click="operateDialog('add')" icon="el-icon-plus" size="small" plain></el-button>-->
+          <!--</el-tooltip>-->
 
-        </el-col>
+        <!--</el-col>-->
 
 
       </el-row>
@@ -105,8 +108,12 @@
 </template>
 
 <script>
+  import TableTools from "../childComponents/tableTools";
   export default {
     name: "newsCatalogue",
+    components: {
+      TableTools,
+    },
     data() {
       return {
         loading: false,
@@ -148,6 +155,11 @@
 
       refresh() {
         this.getNewsType();
+      },
+      addData(){
+
+        this.operateDialog('add')
+
       },
       operateDialog(type, data = null) {
 

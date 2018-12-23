@@ -1,31 +1,31 @@
 <template>
   <div class="componentWrapper">
+    <div v-show="search_input" class="search_wrapper" ref="search_wrapper">
+      <div v-for="(item,index) in searchInfo" :key="index">
+        <label :for="item.name">{{item.label}}</label>
+        <input v-if="item.name!=='timeRange'" autocomplete="off" :name="item.name"  v-model.trim="item.value" :type="item.inputType" :placeholder="item.placeholder"/>
+        <el-date-picker
+          style="width: 200px;font-size: 12px;margin:5px auto"
+          v-if="item.name==='timeRange'"
+          v-model="item.value"
+          value-format="timestamp"
+          type="daterange"
+          align="right"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions2">
+        </el-date-picker>
 
-    <div class="tools">
-      <div v-show="search_input" class="search_wrapper">
-        <div v-for="(item,index) in searchInfo" :key="index">
-          <label :for="item.name">{{item.label}}</label>
-            <input v-if="item.name!=='timeRange'" autocomplete="off" :name="item.name"  v-model.trim="item.value" :type="item.inputType" :placeholder="item.placeholder"/>
-          <el-date-picker
-            style="width: 200px;font-size: 12px;margin:5px auto"
-            v-if="item.name==='timeRange'"
-            v-model="item.value"
-            value-format="timestamp"
-            type="daterange"
-            align="right"
-            unlink-panels
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions2">
-          </el-date-picker>
-
-        </div>
+      </div>
 
       <button class="btn" @click="search()">搜索</button>
-      </div>
-      <button class="btn" @click="showSearch()"><span class="el-icon-search"></span></button>
+    </div>
+    <div class="tools">
+      <button class="btn" v-show="search_btn" ref="search_btn" @click="showSearch($event)"><span class="el-icon-search"></span></button>
       <button class="btn" @click="refresh()"> <span class="el-icon-refresh"></span></button>
+      <button class="btn" @click="addFn()"><span class="el-icon-plus"></span></button>
       <button class="btn"> <span class="el-icon-download"></span></button>
       <button class="btn1" @click="toggle()"> <span class="el-icon-picture"></span></button>
     </div>
@@ -42,13 +42,13 @@
     props:{
       searchInfo:{
         type:Array,
-        required:true
-      },
-
+        required:false,
+      }
     },
     data() {
       return {
         search_input: false,
+        search_btn:false,
         pickerOptions2: {
           shortcuts: [{
             text: '最近一周',
@@ -86,13 +86,19 @@
 
     },
     methods: {
-      showSearch() {
-        this.search_input = !this.search_input;
+
+      showSearch(e) {
+        this.search_input = !this.search_input;//切换 是否 显示搜索弹框
+        if(this.search_input){
+          let dom = this.$refs.search_wrapper;
+          dom.style.top=e.clientY+"px";
+          dom.style.left=e.clientX-250+"px";
+        }
         this.searchInfo.forEach((item)=>{
           item.value="";
-        })
+        }) // 清空输入框
       },
-      search(){
+      search(event){
         let value=this.searchInfo.map((item)=>{
           return item.value
         });
@@ -101,19 +107,46 @@
       },
       refresh(){
         console.log(this);
-
         this.$emit("refresh","Table Tools Require Refresh!");
-
+      },
+      addFn(){
+        // this.$router.push({path: this.addRouterPath});
+        this.$emit("addData","Table Tools Require Add!");
       },
       toggle(){
         console.log("切换");
         this.$emit("toggleDisplay","");
+      },
+      clickFn(e){
+    console.log(e);
+    if(this.$refs.search_wrapper){
+      if (!this.$refs.search_wrapper.contains(e.target) && !this.$refs.search_btn.contains(e.target)) {
+        // console.log(this.search_input,"sss");
+        if(this.search_input){
+          this.search_input=false;
+        }
       }
+
+    }
+
+  }
+
+
 
     },
 
     created() {
       console.log(`table Tools was created!`);
+      if(this.searchInfo){
+        this.search_btn=true;
+      } // 如果有传递搜索参数  显示搜索按钮
+    },
+    mounted(){
+      document.addEventListener("click",this.clickFn)
+    },
+    destroyed(){
+      document.removeEventListener("click",this.clickFn)
+
     }
   }
 </script>
@@ -126,6 +159,44 @@
 
     /*background-color: #1e7c88;*/
 
+    .search_wrapper {
+      color:rgba(0, 0, 0, .3);
+      font-size: 14px;
+      text-align: left;
+      width: 200px;
+      background-color: #fefefe;
+      position: absolute;
+      padding: 5px;
+      border-radius: 1px;
+      min-height: 80px;
+      z-index: 999;
+      box-shadow: 0 0 8px 0 rgba(0, 0, 0, .3);
+      opacity: 0.9;
+      input{
+        height: 30px;
+        line-height: 30px;
+        border-radius: 2px;
+        border: 1px solid #d4d4d4;
+        padding: 2px 3px;
+        box-sizing: border-box;
+        width: 200px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+      .btn{
+        height: 30px;
+        width: 50px;
+        background-color: $baseColor-cyan;
+        color: white;
+        border: 1px solid transparent;
+        border-radius: 1px;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .3);
+        margin: 0 5px;
+        transition:  all 0.3s;
+
+      }
+    }
+
     .tools {
       width: 50%;
       /*background-color: #003f6b;*/
@@ -134,38 +205,6 @@
       display: flex;
       justify-content: flex-end;
       box-sizing: border-box;
-      position: relative;
-      .search_wrapper {
-        color:rgba(0, 0, 0, .3);
-        font-size: 14px;
-        text-align: left;
-        width: 200px;
-        background-color: #fefefe;
-        position: absolute;
-        padding: 5px;
-        border-radius: 1px;
-        top: 45px;
-        right: 185px;
-        min-height: 80px;
-        z-index: 999;
-        box-shadow: 0 0 8px 0 rgba(0, 0, 0, .3);
-        opacity: 0.9;
-        input{
-          height: 30px;
-          line-height: 30px;
-          border-radius: 2px;
-          border: 1px solid #d4d4d4;
-          padding: 2px 3px;
-          box-sizing: border-box;
-          width: 200px;
-          margin-top: 5px;
-          margin-bottom: 5px;
-        }
-        .btn{
-          height: 30px;
-
-        }
-      }
       .btn {
 
         width: 50px;
