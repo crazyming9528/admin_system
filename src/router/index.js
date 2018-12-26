@@ -16,6 +16,9 @@ import UserManagement from '@/components/user/userManagement'
 import Role from '@/components/user/role'
 
 
+import Config from '@/components/setting/config'
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -73,12 +76,13 @@ export default new Router({
 
 
         },{
-
           path: 'role',
           name: 'role',
           component: Role
-
-
+        },{
+          path: 'config',
+          name: 'config',
+          component: Config
         }
 
       ]

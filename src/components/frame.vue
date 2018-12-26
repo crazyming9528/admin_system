@@ -55,14 +55,14 @@
                    active-text-color="#33a0d7">
             <el-menu-item index="/home">
 
-              <i class="el-icon-news"></i>
+              <i class="fa fa-home"></i>
               <span>首页</span>
 
             </el-menu-item>
 
             <el-submenu index="2">
               <template slot="title">
-                <i class="el-icon-document"></i>
+                <i class="fa fa-newspaper-o"></i>
                 <span>新闻资讯</span>
               </template>
               <el-menu-item index="/releaseNews">新闻发布</el-menu-item>
@@ -73,11 +73,19 @@
             </el-submenu>
             <el-submenu index="4">
               <template slot="title">
-                <i class="el-icon-menu"></i>
+                <i class="fa fa-users"></i>
                 <span>用户</span>
               </template>
               <el-menu-item index="/userManagement">用户管理</el-menu-item>
               <el-menu-item index="/role">角色与权限</el-menu-item>
+            </el-submenu>
+
+            <el-submenu index="5">
+              <template slot="title">
+                <i class="fa fa-cog"></i>
+                <span>系统设置</span>
+              </template>
+              <el-menu-item index="/config">基础信息</el-menu-item>
             </el-submenu>
           </el-menu>
 
@@ -248,6 +256,10 @@
     background-color: $baseColor2;
     color: #333;
     width: auto !important;
+    .fa{
+      font-size: 18px;
+      margin-right: 8px;
+    }
     .logo {
       width: 100%;
       text-align: center;

@@ -19,7 +19,8 @@ import {Loading} from "element-ui";
       lock: true,
       // target: document.querySelector(".el-main"),
       text: '拼命加载中...',
-      spinner: 'el-icon-loading',
+      spinner:"fa fa-spinner fa-spin",
+      // spinner: 'el-icon-loading',
       // background: 'rgba(0, 0, 0, 0.8)',
       background: 'transparent',
 

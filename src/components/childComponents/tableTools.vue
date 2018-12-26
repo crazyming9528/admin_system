@@ -23,11 +23,11 @@
       <button class="btn" @click="search()">搜索</button>
     </div>
     <div class="tools">
-      <button class="btn" v-show="search_btn" ref="search_btn" @click="showSearch($event)"><span class="el-icon-search"></span></button>
-      <button class="btn" @click="refresh()"> <span class="el-icon-refresh"></span></button>
-      <button class="btn" @click="addFn()"><span class="el-icon-plus"></span></button>
-      <button class="btn"> <span class="el-icon-download"></span></button>
-      <button class="btn1" @click="toggle()"> <span class="el-icon-picture"></span></button>
+      <button class="btn" v-show="search_btn" ref="search_btn" @click="showSearch($event)"><span class="fa fa-search"></span></button>
+      <button class="btn" @click="refresh()"> <span class="fa fa-refresh"></span></button>
+      <button class="btn" @click="addFn()"><span class="fa fa-plus"></span></button>
+      <button class="btn"> <span class="fa fa-download"></span></button>
+      <button class="btn1" @click="toggle()"> <span class=" fa fa-bar-chart"></span></button>
     </div>
 
 

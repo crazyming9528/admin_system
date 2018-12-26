@@ -55,8 +55,12 @@
               <el-checkbox label="置顶" name="top"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-
-          <el-form-item>
+          <el-form-item v-if="this.editModel">
+            <el-button @click="updateNews(1)" size="small" type="primary">确认修改并发布</el-button>
+            <el-button @click="updateNews(0)" size="small" type="success">确认修改并保存为草稿</el-button>
+            <el-button size="small">取消</el-button>
+          </el-form-item>
+          <el-form-item v-else>
             <button @click="moni()">模拟</button>
             <el-button @click="onSubmit(1)" size="small" type="primary">发布资讯</el-button>
             <el-button @click="onSubmit(0)" size="small" type="success">保存草稿</el-button>
@@ -65,11 +69,6 @@
         </el-form>
 
       </el-row>
-
-
-
-
-
     </div>
 
   </div>
@@ -82,6 +81,7 @@
       return {
         uploadUrl:window.CUIT_server.API_ROOT+"/user/uploadImg",
         form: {
+          id:'',//仅 更新 新闻的时候使用
           title: '',
           firstImg:"",
           type: '',
@@ -90,6 +90,7 @@
           contentHtml:"",
           option:["允许评论"],
         },
+        editModel:false,
         newsType:[]
 
       }
@@ -128,7 +129,6 @@
 
      getHtmlContent(value,render){
         this.form.contentHtml=render;
-
      },
       getNewsType() {
         let data = {
@@ -148,7 +148,7 @@
       },
       moni(){
 
-        let da=[
+        let da = [
           "性感宋波 在线改BUG",
           "追光的人，身披万丈光芒",
           "一辈子很短，要欢喜",
@@ -228,6 +228,37 @@
          }
        })
       },
+      updateNews(type) {
+        // console.log(this.$refs.md);
+        let discuss;
+        let important;
+        this.form.option.indexOf("允许评论") !== -1 ? discuss = 1 : discuss = 0;
+        this.form.option.indexOf("置顶") !== -1 ? important = 1 : important = 0;
+        const data={
+          id:this.form.id,
+          title:this.form.title,
+          author:"3f3ff415-b27f-46cd-bf4d-17b8b14836a8",
+          type:this.form.type,
+          digest:this.form.digest,
+          firstImg:this.form.firstImg,
+          content:this.form.content,
+          contentHtml:this.form.contentHtml,
+          status:type,//type 1 发布文章  type 0 保存草稿
+          discuss,
+          important
+        };
+
+
+        this.requestApiFnc("/news/update","put",data,(res)=>{
+          let {data:{code,map,message}} = res;
+          if (code===200){
+            this.ele_alert("发布新闻成功！","success",()=> this.$router.push({path: "/newsManagement"}));
+          }else {
+            this.ele_alert(message,"error");
+          }
+        })
+      },
+
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -238,6 +269,36 @@
       },
       uploadError(err, file, fileList){
         console.log(err,file,fileList)
+      },
+      initEditModel(nid){
+
+        this.requestApiFnc(`/news/getNewsById`,`get`,{
+          newsId:nid
+        },(res)=>{
+          console.log(res);
+          const {data:{code,map:{news},message}} = res;
+          if (code===200){
+            this.form.id = news.id;
+            this.form.title=news.title;
+            this.form.digest=news.digest;
+            this.form.content=news.content;
+            this.form.type=news.type;
+            this.form.firstImg=news.firstImg;
+            this.form.option=[];
+            if(news.discuss){
+              this.form.option.push("允许评论");
+            }
+            if (news.important) {
+              this.form.option.push("置顶");
+            }
+          }
+          else {
+            this.ele_alert(message,"error",()=> this.$router.push({path: "/newsManagement"}),()=> this.$router.push({path: "/newsManagement"}));
+          }
+
+
+        })
+
       }
 
     },
@@ -247,6 +308,14 @@
     created() {
       this.toTop();
       this. getNewsType();
+      const action = this.$route.query.action;
+      const newsId = this.$route.query.newsId;
+      if(action && newsId){
+        this.editModel = action === "edit";// 判断action 是edit  则进入编辑模式
+        if(this.editModel){
+          this.initEditModel(newsId);
+        }
+      }
     }
   }
 </script>

@@ -84,21 +84,21 @@
       getFilter() {
 
 
-        this.requestApiFnc("/newsDiscuss/getFilter", "get", null ,()=>{
-          const {data:{keyword, replaceWord}} =res;
-          // if(code===200){
-          //   this.ele_alert("过滤词库更新成功！","success");
-          // }else {
-          //   this.ele_alert(message,"error")
-          // }
-         this.textarea = keyword;
-         this.replace = replaceWord;
+        this.requestApiFnc("/newsDiscuss/getFilter", "get", null ,(res)=>{
+          const {data:{code, map:{discussFilter:{keyword,replaceWord}},message}} = res;
+          if(code===200){
+            this.textarea = keyword;
+            this.replace = replaceWord;
+          }else {
+            this.ele_alert(message,"error")
+          }
         })
 
       },
       saveFilter() {
 
         let keyword = [];
+        let keywordString="";
         let replaceWord = this.replace;
         if (this.textarea) {
           keyword = this.textarea.split(",");
@@ -106,14 +106,14 @@
             keyword.splice(keyword.length-1,1);
           }
           //变更需求  又要改成 传字符串的形式
-          keyword = keyword.join(",")
+          keywordString = keyword.join(",")
         }else {
-          keyword = "";
+          keywordString = "";
         }
         this.requestApiFnc("/newsDiscuss/saveFilter", "post", {
-          keyword,
+          keyword:keywordString,
           replaceWord
-        },()=>{
+        },(res)=>{
           const {data:{code,map,message,success}} =res;
           if(code===200){
             this.ele_alert("过滤词库更新成功！","success");

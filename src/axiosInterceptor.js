@@ -41,10 +41,12 @@ let http = axios.create({
   }, function (error) {
     // 对响应错误做点什么
 
-    setTimeout(()=>{
-      // tryHideFullScreenLoading();
-      globalLoading.tryHideFullScreenLoading();
-    },300);
+    globalLoading.tryHideFullScreenLoading();
+
+    // setTimeout(()=>{
+    //   // tryHideFullScreenLoading();
+    //   globalLoading.tryHideFullScreenLoading();
+    // },300);
     return Promise.reject(error);
   });
 

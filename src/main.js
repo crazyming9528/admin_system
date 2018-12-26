@@ -19,6 +19,8 @@ import publicFunction from './publicFunction'
 import axios from 'axios'
 import {axiosHttp} from "./axiosInterceptor";
 
+import 'font-awesome/scss/font-awesome.scss'
+
 
 Vue.use(mavonEditor)
 Vue.use(publicFunction);

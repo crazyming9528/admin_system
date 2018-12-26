@@ -49,7 +49,7 @@
           </ul>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row class="panelArea">
 
         <el-col :span="24">
           <el-button type="primary" size="small" @click="addSlider()">新增</el-button>

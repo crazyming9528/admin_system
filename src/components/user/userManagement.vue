@@ -55,9 +55,8 @@
       <el-row class="panelArea">
         <!-- :header-cell-style="{background:' #33a0d7',color:'white'}" 表格的属性 蓝色背景-->
         <el-col :span="24">
+          <!--v-loading="loading"-->
           <el-table
-            v-loading="loading"
-
             :data="tableData"
             border
             style="width: 100%">

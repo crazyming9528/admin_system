@@ -251,8 +251,8 @@
 
         if (typeof timeRange === "object" && timeRange !== null) {
           console.log(timeRange);
-          startTime = timeRange[0];
-          endTime = timeRange[1];
+          startTime = Math.floor(timeRange[0]/1000);
+          endTime = Math.floor(timeRange[1]/1000);
         }
 
         this.requestApiFnc("/news/getNewsByQuery", "get", {
