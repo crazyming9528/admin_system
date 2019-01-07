@@ -30,19 +30,27 @@
               <div class="li_item th description">描述</div>
               <div class="li_item th option">操作</div>
             </li>
-            <li class="li_row" v-for="(item,index) in sliderData " :key=index  >
+            <li class="li_row" v-for="(item,index) in sliderData " :key=index draggable="true"
+                @dragstart="drag($event,index)" @drop="drop($event,index)" @dragover='allowDrop($event)'>
               <div class="li_item order">{{index+1}}</div>
-              <div class="li_item rank"><input min="0" v-model.trim="item.rank" type="number" :class="{'text-line':!item.status}"></div>
-              <div class="li_item title"><input v-model.trim="item.newsTitle" type="text" placeholder="请输入标题" :class="{'text-line':!item.status}"></div>
+              <div class="li_item rank"><input min="0" v-model.trim="item.rank" type="number"
+                                               :class="{'text-line':!item.status}"></div>
+              <div class="li_item title"><input v-model.trim="item.newsTitle" type="text" placeholder="请输入标题"
+                                                :class="{'text-line':!item.status}"></div>
               <div class="li_item url"><input v-model.trim="item.rUrl" type="text"
-                                              placeholder="链接需加上 http:// 或 https://" :class="{'text-line':!item.status}">
+                                              placeholder="链接需加上 http:// 或 https://"
+                                              :class="{'text-line':!item.status}">
               </div>
-              <div class="li_item imgUrl"><input v-model.trim="item.imgUrl" type="text" placeholder="请输入图片链接" :class="{'text-line':!item.status}"></div>
-              <div class="li_item description"><input v-model.trim="item.remark" type="text" placeholder="请输入描述" :class="{'text-line':!item.status}" >
+              <div class="li_item imgUrl"><input v-model.trim="item.imgUrl" type="text" placeholder="请输入图片链接"
+                                                 :class="{'text-line':!item.status}"></div>
+              <div class="li_item description"><input v-model.trim="item.remark" type="text" placeholder="请输入描述"
+                                                      :class="{'text-line':!item.status}">
               </div>
-              <div class="li_item option" >
-                <el-button v-if="item.status===0" type="text" @click="controlStatus(index)"><span class="font-color-green">启用</span></el-button>
-                <el-button @click="controlStatus(index)" v-if="item.status===1" type="text"><span class="font-color-red">禁用</span></el-button>
+              <div class="li_item option">
+                <el-button v-if="item.status===0" type="text" @click="controlStatus(index)"><span
+                  class="font-color-green">启用</span></el-button>
+                <el-button @click="controlStatus(index)" v-if="item.status===1" type="text"><span
+                  class="font-color-red">禁用</span></el-button>
                 <el-button type="text" @click="deleteSlider(index)">删除</el-button>
               </div>
             </li>
@@ -69,8 +77,11 @@
     data() {
       return {
         sliderData: [],
-        fullscreenLoading:false
-
+        fullscreenLoading: false,
+        moveDom: "",
+        changeDom: "",
+        startY: "",
+        endY: ""
       }
     },
     methods: {
@@ -82,11 +93,11 @@
           if (i === index) {
             if (item.status === 0) {
               if (typeof this.sliderData[i].rank !== "number") {
-                this.ele_alert(`序号只能是数字！`,`warning`);
+                this.ele_alert(`序号只能是数字！`, `warning`);
                 check = false;
               }
               if (this.sliderData[i].newsTitle === "" || this.sliderData[i].rUrl === "" || this.sliderData[i].imgUrl === "" || this.sliderData[i].remark === "") {
-                this.ele_alert(`你必须完整填写这条轮播图数据才能启用它！`,`warning`);
+                this.ele_alert(`你必须完整填写这条轮播图数据才能启用它！`, `warning`);
                 check = false;
               }
 
@@ -101,22 +112,22 @@
         })
 
       },
-      getSlider(){
-        this.requestApiFnc("/NewsTurn/getAll","get",null,(res)=>{
+      getSlider() {
+        this.requestApiFnc("/NewsTurn/getAll", "get", null, (res) => {
 
-          const {data:{code,map:{turn},message,success}} =res;
-          if(code !==200){
-            this.ele_alert(message,"error");
+          const {data: {code, map: {turn}, message, success}} = res;
+          if (code !== 200) {
+            this.ele_alert(message, "error");
             return;
           }
-          this.sliderData=turn;
+          this.sliderData = turn;
 
         })
 
 
       },
       addSlider() {
-        if(this.sliderData.length===0){
+        if (this.sliderData.length === 0) {
 
           this.sliderData.push({
             rank: 1,
@@ -127,7 +138,7 @@
             status: 0
           })
 
-        }else{
+        } else {
           var temp = this.sliderData.map((item) => {
             return parseInt(item.rank);
           });
@@ -151,8 +162,8 @@
       deleteSlider(index) {
         this.ele_confirm(`确定删除吗？`, `warning`, () => {
             this.sliderData.splice(index, 1);
-            this.tips('已删除，保存后生效！','success')
-          }, () => this.tips( '已取消删除！','info')
+            this.tips('已删除，保存后生效！', 'success')
+          }, () => this.tips('已取消删除！', 'info')
         );
         // this.sliderData.splice(index, 1)
       },
@@ -173,28 +184,91 @@
         if (check) {
           // this.tips("保存成功！","success");
 
-          this.requestApiFnc("/NewsTurn/addList","post",{
-            request:this.sliderData
-          },(res)=>{
+          this.requestApiFnc("/NewsTurn/addList", "post", {
+            request: this.sliderData
+          }, (res) => {
             console.log(res);
-            const {data:{code,map,message,success}} =res;
-            if(code !==200){
-              this.ele_alert(message,"error");
+            const {data: {code, map, message, success}} = res;
+            if (code !== 200) {
+              this.ele_alert(message, "error");
               return;
             }
 
-          // this.tips(message,"success");
-            this.ele_alert(message,"success");
+            // this.tips(message,"success");
+            this.ele_alert(message, "success");
             this.getSlider();
 
 
-          },error=>console.log(error))
+          }, error => console.log(error))
 
 
-        }else {
-          this.ele_alert(`请将轮播图数据填写完整后再保存！`,  `warning`);
+        } else {
+          this.ele_alert(`请将轮播图数据填写完整后再保存！`, `warning`);
         }
 
+      },
+      drag(event, index) {
+
+        this.moveDom = event.currentTarget;
+        this.startY = event.clientY;//   拖拽开始时 的y位置
+
+        event.dataTransfer.setData('index', index);
+        console.log(index);
+
+      },
+      drop(event, index) {
+
+        event.preventDefault();
+        let startIndex = parseInt(event.dataTransfer.getData('index'));
+        let currentIndex = parseInt(index)
+
+        console.log("start", startIndex);
+        console.log("drop", currentIndex);
+        
+        if (startIndex-currentIndex === 1){
+          // let temp = this.sliderData[currentIndex];
+        [ this.sliderData[currentIndex], this.sliderData[startIndex]]=[ this.sliderData[startIndex], this.sliderData[currentIndex]]; // 利用解构赋值交换变量
+          console.log("没有意义",startIndex,currentIndex);
+          return;
+        }
+
+        if (startIndex < currentIndex) {
+          console.log("小于");
+          this.sliderData.splice(index + 1, 0, this.sliderData[startIndex]);
+          this.sliderData.splice(startIndex, 1)
+        } else if (startIndex > index) {
+          console.log("大于");
+          this.sliderData.splice(index + 1, 0, this.sliderData[startIndex]);
+
+          console.log("删除"+startIndex + 1);
+          this.sliderData.splice(startIndex + 1, 1)
+
+        } else if (startIndex === index) {
+          console.log("en.... 啥都没有发生")
+
+        }
+
+
+        // this.changeDom = event.currentTarget;
+        // event.currentTarget.style.backgroundColor="orange";
+        // console.log("ddd");
+        // console.log(event);
+        // if(this.startY-this.endY>=0){
+        //
+        //
+        //     console.log("下")
+        //   this.$refs.parant.insertBefore(this.moveDom, this.changeDom.nextSibling)
+        //
+        //   } else{
+        //
+        //   console.log("上")
+        //   this.$refs.parant.insertBefore(this.moveDom, this.changeDom)
+        //   }
+      },
+      allowDrop(event) {
+        event.preventDefault();
+        // event.currentTarget.style.backgroundColor="orange";
+        this.endY = event.clientY;
       }
 
     },
@@ -216,7 +290,7 @@
 
     .slideManage {
 
-      .s-header{
+      .s-header {
         background-color: $baseColor3;
         background-image: linear-gradient(120deg, $baseColor3 10%, #7bbdbc 70%);
         background-size: 100% 100%;
@@ -224,20 +298,24 @@
 
       .li_row {
         transition: all 0.5s;
+
         &:hover {
           background-color: #ebf6fb;
         }
       }
+
       li {
         width: 100%;
         display: flex;
         font-size: 14px;
+
         .th {
           /*background-color: #33a0d7;*/
           background-color: transparent;
           color: white;
 
         }
+
         .li_item {
           text-align: center;
           height: 48px !important;
@@ -257,6 +335,7 @@
             background-color: transparent;
 
           }
+
           &:not(:first-child):not(:last-child):not(:nth-child(2)) {
             flex: 1;
           }
@@ -266,9 +345,11 @@
         .rank, .order {
           width: 50px;
         }
+
         .rank, .title, .url, .imgUrl, .description, .option {
           margin-left: -1px;
         }
+
         .option {
           width: 100px;
         }
