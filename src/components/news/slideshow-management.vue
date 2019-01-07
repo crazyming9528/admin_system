@@ -211,59 +211,43 @@
 
         this.moveDom = event.currentTarget;
         this.startY = event.clientY;//   拖拽开始时 的y位置
-
         event.dataTransfer.setData('index', index);
         console.log(index);
-
       },
       drop(event, index) {
 
         event.preventDefault();
         let startIndex = parseInt(event.dataTransfer.getData('index'));
-        let currentIndex = parseInt(index)
-
+        let currentIndex = parseInt(index);
         console.log("start", startIndex);
         console.log("drop", currentIndex);
         
         if (startIndex-currentIndex === 1){
-          // let temp = this.sliderData[currentIndex];
-        [ this.sliderData[currentIndex], this.sliderData[startIndex]]=[ this.sliderData[startIndex], this.sliderData[currentIndex]]; // 利用解构赋值交换变量
-          console.log("没有意义",startIndex,currentIndex);
+          let str =JSON.stringify(this.sliderData[startIndex]);
+          this.sliderData[startIndex]= this.sliderData[currentIndex];
+          this.sliderData[currentIndex] = JSON.parse(str);
+          console.log(this.sliderData[startIndex]);
+          console.log(this.sliderData[currentIndex]);
           return;
         }
 
+
         if (startIndex < currentIndex) {
           console.log("小于");
-          this.sliderData.splice(index + 1, 0, this.sliderData[startIndex]);
+          this.sliderData.splice(currentIndex + 1, 0, this.sliderData[startIndex]);
           this.sliderData.splice(startIndex, 1)
-        } else if (startIndex > index) {
+        } else if (startIndex > currentIndex) {
           console.log("大于");
-          this.sliderData.splice(index + 1, 0, this.sliderData[startIndex]);
-
+          this.sliderData.splice(currentIndex + 1, 0, this.sliderData[startIndex]);
           console.log("删除"+startIndex + 1);
           this.sliderData.splice(startIndex + 1, 1)
-
-        } else if (startIndex === index) {
+        } else if (startIndex === currentIndex) {
           console.log("en.... 啥都没有发生")
 
         }
 
 
-        // this.changeDom = event.currentTarget;
-        // event.currentTarget.style.backgroundColor="orange";
-        // console.log("ddd");
-        // console.log(event);
-        // if(this.startY-this.endY>=0){
-        //
-        //
-        //     console.log("下")
-        //   this.$refs.parant.insertBefore(this.moveDom, this.changeDom.nextSibling)
-        //
-        //   } else{
-        //
-        //   console.log("上")
-        //   this.$refs.parant.insertBefore(this.moveDom, this.changeDom)
-        //   }
+
       },
       allowDrop(event) {
         event.preventDefault();
