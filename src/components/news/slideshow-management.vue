@@ -77,11 +77,7 @@
     data() {
       return {
         sliderData: [],
-        fullscreenLoading: false,
-        moveDom: "",
-        changeDom: "",
-        startY: "",
-        endY: ""
+        fullscreenLoading: false
       }
     },
     methods: {
@@ -92,10 +88,10 @@
         this.sliderData.forEach((item, i) => {
           if (i === index) {
             if (item.status === 0) {
-              if (typeof this.sliderData[i].rank !== "number") {
-                this.ele_alert(`序号只能是数字！`, `warning`);
-                check = false;
-              }
+              // if (typeof this.sliderData[i].rank !== "number") {
+              //   this.ele_alert(`序号只能是数字！`, `warning`);
+              //   check = false;
+              // }
               if (this.sliderData[i].newsTitle === "" || this.sliderData[i].rUrl === "" || this.sliderData[i].imgUrl === "" || this.sliderData[i].remark === "") {
                 this.ele_alert(`你必须完整填写这条轮播图数据才能启用它！`, `warning`);
                 check = false;
@@ -127,10 +123,10 @@
 
       },
       addSlider() {
-        if (this.sliderData.length === 0) {
+        // if (this.sliderData.length === 0) {
 
           this.sliderData.push({
-            rank: 1,
+            // rank: 1,
             title: "",
             url: "",
             imgUrl: "",
@@ -138,25 +134,26 @@
             status: 0
           })
 
-        } else {
-          var temp = this.sliderData.map((item) => {
-            return parseInt(item.rank);
-          });
-
-          temp.sort(function (a, b) {
-            return a - b;
-          });
-
-          this.sliderData.push({
-            rank: temp[temp.length - 1] + 1,
-            newsTitle: "",
-            rUrl: "",
-            imgUrl: "",
-            remark: "",
-            status: 0
-          })
-
-        }
+        // }
+        // else {
+        //   var temp = this.sliderData.map((item) => {
+        //     return parseInt(item.rank);
+        //   });
+        //
+        //   temp.sort(function (a, b) {
+        //     return a - b;
+        //   });
+        //
+        //   this.sliderData.push({
+        //     rank: temp[temp.length - 1] + 1,
+        //     newsTitle: "",
+        //     rUrl: "",
+        //     imgUrl: "",
+        //     remark: "",
+        //     status: 0
+        //   })
+        //
+        // }
 
       },
       deleteSlider(index) {
@@ -171,10 +168,10 @@
 
         let check = true;
         this.sliderData.forEach((item) => {
-          if (typeof item.rank !== "number") {
-            this.ele_alert(`序号只能是数字！`)
-            check = false;
-          }
+          // if (typeof item.rank !== "number") {
+          //   this.ele_alert(`序号只能是数字！`)
+          //   check = false;
+          // }
           if (item.newsTitle === "" || item.rUrl === "" || item.imgUrl === "" || item.remark === "") {
 
             check = false;
@@ -221,30 +218,50 @@
         let currentIndex = parseInt(index);
         console.log("start", startIndex);
         console.log("drop", currentIndex);
-        
-        if (startIndex-currentIndex === 1){
-          let str =JSON.stringify(this.sliderData[startIndex]);
-          this.sliderData[startIndex]= this.sliderData[currentIndex];
-          this.sliderData[currentIndex] = JSON.parse(str);
-          console.log(this.sliderData[startIndex]);
-          console.log(this.sliderData[currentIndex]);
-          return;
-        }
 
+        if (startIndex - currentIndex === 1) {
+          this.sliderData.splice(currentIndex+1,0,this.sliderData[currentIndex]);
+          this.sliderData.splice(currentIndex+1,0,this.sliderData[startIndex+1]);
+          this.sliderData.splice(currentIndex+3,1);
+          this.sliderData.splice(currentIndex,1);
+        }else  if(startIndex - currentIndex > 1){
 
-        if (startIndex < currentIndex) {
+          console.log("大于");
+          this.sliderData.splice(currentIndex + 1, 0, this.sliderData[startIndex]);
+          console.log("删除" + startIndex + 1);
+          this.sliderData.splice(startIndex + 1, 1)
+
+        }else if(startIndex - currentIndex < 0){
+
           console.log("小于");
           this.sliderData.splice(currentIndex + 1, 0, this.sliderData[startIndex]);
           this.sliderData.splice(startIndex, 1)
-        } else if (startIndex > currentIndex) {
-          console.log("大于");
-          this.sliderData.splice(currentIndex + 1, 0, this.sliderData[startIndex]);
-          console.log("删除"+startIndex + 1);
-          this.sliderData.splice(startIndex + 1, 1)
-        } else if (startIndex === currentIndex) {
-          console.log("en.... 啥都没有发生")
 
         }
+        
+        // if (startIndex-currentIndex === 1){
+        //   let str =JSON.stringify(this.sliderData[startIndex]);
+        //   this.sliderData[startIndex]= this.sliderData[currentIndex];
+        //   this.sliderData[currentIndex] = JSON.parse(str);
+        //   console.log(this.sliderData[startIndex]);
+        //   console.log(this.sliderData[currentIndex]);
+        //   return;
+        // }
+        //
+        //
+        // if (startIndex < currentIndex) {
+        //   console.log("小于");
+        //   this.sliderData.splice(currentIndex + 1, 0, this.sliderData[startIndex]);
+        //   this.sliderData.splice(startIndex, 1)
+        // } else if (startIndex > currentIndex) {
+        //   console.log("大于");
+        //   this.sliderData.splice(currentIndex + 1, 0, this.sliderData[startIndex]);
+        //   console.log("删除"+startIndex + 1);
+        //   this.sliderData.splice(startIndex + 1, 1)
+        // } else if (startIndex === currentIndex) {
+        //   console.log("en.... 啥都没有发生")
+        //
+        // }
 
 
 
