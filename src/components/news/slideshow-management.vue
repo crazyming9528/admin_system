@@ -23,7 +23,7 @@
           <ul class="slideManage">
             <li class="s-header">
               <div class="li_item th order">#</div>
-              <div class="li_item th rank">排序</div>
+              <!--<div class="li_item th rank">排序</div>-->
               <div class="li_item th title">标题</div>
               <div class="li_item th url">跳转链接</div>
               <div class="li_item th imgUrl">图片链接</div>
@@ -33,8 +33,8 @@
             <li class="li_row" v-for="(item,index) in sliderData " :key=index draggable="true"
                 @dragstart="drag($event,index)" @drop="drop($event,index)" @dragover='allowDrop($event)'>
               <div class="li_item order">{{index+1}}</div>
-              <div class="li_item rank"><input min="0" v-model.trim="item.rank" type="number"
-                                               :class="{'text-line':!item.status}"></div>
+              <!--<div class="li_item rank"><input min="0" v-model.trim="item.rank" type="number"-->
+                                               <!--:class="{'text-line':!item.status}"></div>-->
               <div class="li_item title"><input v-model.trim="item.newsTitle" type="text" placeholder="请输入标题"
                                                 :class="{'text-line':!item.status}"></div>
               <div class="li_item url"><input v-model.trim="item.rUrl" type="text"
@@ -337,7 +337,7 @@
 
           }
 
-          &:not(:first-child):not(:last-child):not(:nth-child(2)) {
+          &:not(:first-child):not(:last-child) {
             flex: 1;
           }
 
