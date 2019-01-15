@@ -219,15 +219,16 @@
         console.log("start", startIndex);
         console.log("drop", currentIndex);
 
-        if (startIndex - currentIndex === 1) {
-          this.sliderData.splice(currentIndex+1,0,this.sliderData[currentIndex]);
-          this.sliderData.splice(currentIndex+1,0,this.sliderData[startIndex+1]);
-          this.sliderData.splice(currentIndex+3,1);
-          this.sliderData.splice(currentIndex,1);
-        }else  if(startIndex - currentIndex > 1){
+        // if (startIndex - currentIndex === 1) {
+        //   this.sliderData.splice(currentIndex+1,0,this.sliderData[currentIndex]);
+        //   this.sliderData.splice(currentIndex+1,0,this.sliderData[startIndex+1]);
+        //   this.sliderData.splice(currentIndex+3,1);
+        //   this.sliderData.splice(currentIndex,1);
+        // }else
+          if(startIndex - currentIndex > 0){
 
           console.log("大于");
-          this.sliderData.splice(currentIndex + 1, 0, this.sliderData[startIndex]);
+          this.sliderData.splice(currentIndex, 0, this.sliderData[startIndex]);
           console.log("删除" + startIndex + 1);
           this.sliderData.splice(startIndex + 1, 1)
 
@@ -237,7 +238,9 @@
           this.sliderData.splice(currentIndex + 1, 0, this.sliderData[startIndex]);
           this.sliderData.splice(startIndex, 1)
 
-        }
+        }else {
+            console.log("什么也不用做");
+          }
         
         // if (startIndex-currentIndex === 1){
         //   let str =JSON.stringify(this.sliderData[startIndex]);

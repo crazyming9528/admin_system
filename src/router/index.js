@@ -9,6 +9,7 @@ import ReleaseNews from '@/components/news/releaseNews'
 import SlideshowManagement from '@/components/news/slideshow-management'
 import NewsCatalogue from '@/components/news/newsCatalogue'
 import CommentManagement from '@/components/news/commentsManagement'
+import Link from '@/components/setting/link'
 
 
 
@@ -83,6 +84,10 @@ export default new Router({
           path: 'config',
           name: 'config',
           component: Config
+        },{
+          path: 'link',
+          name: 'link',
+          component: Link
         }
 
       ]

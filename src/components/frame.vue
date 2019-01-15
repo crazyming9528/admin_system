@@ -86,6 +86,7 @@
                 <span>系统设置</span>
               </template>
               <el-menu-item index="/config">基础信息</el-menu-item>
+              <el-menu-item index="/link">友情链接</el-menu-item>
             </el-submenu>
           </el-menu>
 
