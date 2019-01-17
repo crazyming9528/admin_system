@@ -31,10 +31,9 @@
             <li class="li_row" v-for="(item,index) in linkData " :key=index draggable="true"
                 @dragstart="drag($event,index)" @drop="drop($event,index)" @dragover='allowDrop($event)'>
               <div class="li_item order">{{index+1}}</div>
-              <!--<div class="li_item rank"><input min="0" v-model.trim="item.rank" type="number"-->
-              <!--:class="{'text-line':!item.status}"></div>-->
               <div class="li_item title"><input v-model.trim="item.name" type="text" placeholder="请输入站点名称"></div>
-              <div class="li_item url"><input v-model.trim="item.url" type="text" placeholder="链接需加上 http:// 或 https://">
+              <div class="li_item url"><input v-model.trim="item.url" type="text"
+                                              placeholder="链接需加上 http:// 或 https://">
               </div>
               <div class="li_item description"><input v-model.trim="item.description" type="text" placeholder="请输入描述">
               </div>
@@ -65,18 +64,19 @@
     data() {
       return {
         linkData: [
-          {name:'百度网',url:'wwww.baidu.com',description:'baidu'},
-          {name:'百度网',url:'wwww.baidu.com',description:'baidu'},
-          {name:'百度网',url:'wwww.baidu.com',description:'baidu'},
-          {name:'百度网',url:'wwww.baidu.com',description:'baidu'}
+          {name: '百度', url: 'wwww.baidu.com', description: 'baidu'},
+          {name: '腾讯网', url: 'wwww.qq.com', description: 'tencent'},
+          {name: '新浪微博', url: 'https://www.weibo.com/', description: 'weibo'},
+          {name: '今日头条', url: 'https://www.toutiao.com/', description: 'bytedance'},
+          {name: '哔哩哔哩', url: 'https://www.bilibili.com/', description: 'bilibili'}
         ],
         fullscreenLoading: false
       }
     },
     methods: {
-      
+
       getLink() {
-        this.requestApiFnc("/NewsTurn/getAll", "get", null, (res) => {
+        this.requestApiFnc("/newsTurn/getAll", "get", null, (res) => {
 
           const {data: {code, map: {turn}, message, success}} = res;
           if (code !== 200) {
@@ -95,7 +95,7 @@
           url: "",
           description: "",
         })
-        
+
 
       },
       deleteLink(index) {
@@ -112,12 +112,7 @@
 
         let check = true;
         this.linkData.forEach((item) => {
-          // if (typeof item.rank !== "number") {
-          //   this.ele_alert(`序号只能是数字！`)
-          //   check = false;
-          // }
           if (item.newsTitle === "" || item.rUrl === "" || item.imgUrl === "" || item.remark === "") {
-
             check = false;
           }
         });
@@ -125,7 +120,7 @@
         if (check) {
           // this.tips("保存成功！","success");
 
-          this.requestApiFnc("/NewsTurn/addList", "post", {
+          this.requestApiFnc("/newsTurn/addList", "post", {
             request: this.linkData
           }, (res) => {
             console.log(res);
@@ -149,40 +144,29 @@
 
       },
       drag(event, index) {
-
-        this.moveDom = event.currentTarget;
-        this.startY = event.clientY;//   拖拽开始时 的y位置
         event.dataTransfer.setData('index', index);
-        console.log(index);
       },
       drop(event, index) {
-
         event.preventDefault();
         let startIndex = parseInt(event.dataTransfer.getData('index'));
         let currentIndex = parseInt(index);
         console.log("start", startIndex);
         console.log("drop", currentIndex);
 
-        // if (startIndex - currentIndex === 1) {
-        //   this.linkData.splice(currentIndex+1,0,this.linkData[currentIndex]);
-        //   this.linkData.splice(currentIndex+1,0,this.linkData[startIndex+1]);
-        //   this.linkData.splice(currentIndex+3,1);
-        //   this.linkData.splice(currentIndex,1);
-        // }else
-        if(startIndex - currentIndex > 0){
+        if (startIndex - currentIndex > 0) {
 
-          console.log("大于");
+          console.log("要拖拽的元素的索引 大于 当前位置的元素的索引");
           this.linkData.splice(currentIndex, 0, this.linkData[startIndex]);
           console.log("删除" + startIndex + 1);
           this.linkData.splice(startIndex + 1, 1)
 
-        }else if(startIndex - currentIndex < 0){
+        } else if (startIndex - currentIndex < 0) {
 
-          console.log("小于");
+          console.log("要拖拽的元素的索引  小于 当前位置的元素的索引");
           this.linkData.splice(currentIndex + 1, 0, this.linkData[startIndex]);
           this.linkData.splice(startIndex, 1)
 
-        }else {
+        } else {
           console.log("什么也不用做");
         }
 

@@ -135,7 +135,7 @@
           pageNum: 1,
           pageSize: 100
         };
-        this.requestApiFnc("/NewsType/getAll", "get", data,
+        this.requestApiFnc("/newsType/getAll", "get", data,
           (res) => {
             const {data:{code,map:{pageInfo:{list}},message,success}} =res;
             if(code !==200){
@@ -274,7 +274,7 @@
       },
       initEditModel(nid){
 
-        this.requestApiFnc(`/news/getNewsById`,`get`,{
+        this.requestApiFnc(`/news/getnewsById`,`get`,{
           newsId:nid
         },(res)=>{
           console.log(res);

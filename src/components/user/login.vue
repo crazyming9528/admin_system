@@ -6,12 +6,12 @@
 
 <div class="loginWrapper ">
   <div class="logo "><img src="../../assets/logo.png" alt=""></div>
-  <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
+  <el-form :label-position="labelPosition" label-width="80px" :model="form">
     <el-form-item label="账号">
-      <el-input v-model="formLabelAlign.username"></el-input>
+      <el-input v-model="form.username"></el-input>
     </el-form-item>
     <el-form-item label="密码">
-      <el-input type="password" v-model="formLabelAlign.password"></el-input>
+      <el-input type="password" v-model="form.password"></el-input>
     </el-form-item>
     <el-form-item  label="">
       <el-button  type="primary" @click="login">登录</el-button>
@@ -32,17 +32,33 @@
       data(){
           return{
             labelPosition:"top",
-            formLabelAlign: {
-              username:"test",
-              password:"admin",
+            form: {
+              username:"18581520828",
+              password:"123456",
             }
           }
       },
       methods:{
           login(){
-            this.setStorage("login","1");
-           this.tips("登录成功","success");
-            this.$router.push({path: "/home"});
+            let type = "";
+
+            //判断是电话还是邮箱
+            // if (isNaN(this.username)){
+            //   type ="email"
+            // }else {
+            //   type = "phone"
+            // }
+            this.requestApiFnc("/login",'post2',{
+              username:this.form.username+"_phone",
+              password:this.form.password,
+            },(res)=>{
+              console.log(res.data.map.token);
+              this.setStorage("login",res.data.map.token);
+              this.tips("登录成功","success");
+              this.$router.push({path: "/home"});
+            });
+
+
           },
 
         register(){

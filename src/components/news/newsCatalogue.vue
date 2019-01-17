@@ -141,7 +141,7 @@
           pageNum: 1,
           pageSize: 100
         };
-        this.requestApiFnc("/NewsType/getAll", "get", data,
+        this.requestApiFnc("/newsType/getAll", "get", data,
           (res) => {
             const {data:{code,map:{pageInfo:{list}},message,success}} =res;
             if(code !==200){
@@ -204,7 +204,7 @@
 
         this.ele_confirm(`确定删除吗？`, `warning`, () => {
 
-            this.requestApiFnc("/NewsType/delete", "delete", {id: this.addOrEditDialog.currentData.id}, (res) => {
+            this.requestApiFnc("/newsType/delete", "delete", {id: this.addOrEditDialog.currentData.id}, (res) => {
               const {data:{code,map,message,success}} =res;
               if(code !==200){
                 this.ele_alert(message,"error");
@@ -229,7 +229,7 @@
           remark: this.form.description,
         };
 
-        this.requestApiFnc("/NewsType/add", "post", data,
+        this.requestApiFnc("/newsType/add", "post", data,
           (res) => {
             console.log(res);
             let{data:{code,map,message,success}} =res;
@@ -251,7 +251,7 @@
           typeName: this.form.name,
           remark: this.form.description,
         };
-        this.requestApiFnc("/NewsType/update", "put", data, (res) => {
+        this.requestApiFnc("/newsType/update", "put", data, (res) => {
         let{data:{code,map,message,success}} =res;
 
           if(code !==200){

@@ -8,7 +8,7 @@ exports.install = function (Vue, options) {
    * @param message
    * @param type 消息提示类型 success/warning/info/error
    */
-  Vue.prototype.tips = function (message, type="info") {
+  Vue.prototype.tips = function (message, type = "info") {
 
     this.$message({
       message: message,
@@ -50,17 +50,17 @@ exports.install = function (Vue, options) {
    * @param title
    * @param confirmButtonText
    */
-  Vue.prototype.ele_alert=function(message, type="info",confirmCallback=null, cancelCallback=null,title = "提示",confirmButtonText=`确定`){
+  Vue.prototype.ele_alert = function (message, type = "info", confirmCallback = null, cancelCallback = null, title = "提示", confirmButtonText = `确定`) {
     this.$alert(message, {
       confirmButtonText,
       title,
       type,
-    }).then((res)=>{
-      if(typeof confirmCallback==="function"){
+    }).then((res) => {
+      if (typeof confirmCallback === "function") {
         confirmCallback();
       }
-    }).catch((res)=>{
-      if(typeof cancelCallback==="function"){
+    }).catch((res) => {
+      if (typeof cancelCallback === "function") {
         cancelCallback();
       }
     })
@@ -92,18 +92,18 @@ exports.install = function (Vue, options) {
    * @param successCallback
    * @param errorCallback
    */
-  Vue.prototype.requestApiFnc=function(url, type, data=null, successCallback, errorCallback=null){
+  Vue.prototype.requestApiFnc = function (url, type, data = null, successCallback, errorCallback = null) {
     if (type === "get") {
       this.$axios.get(url, {params: data}).then((res) => {
         successCallback(res)
       }).catch((error) => {
-        if(errorCallback){
+        if (errorCallback) {
           errorCallback(error)
         }
-        if(error.response){
-          this.ele_alert("系统错误，请稍后再试！ [Type:"+type+" , Status code:"+error.response.status+"]","error");
-        }else {
-          this.ele_alert("未知错误！","error");
+        if (error.response) {
+          this.ele_alert("系统错误，请稍后再试！ [Type:" + type + " , Status code:" + error.response.status + "]", "error");
+        } else {
+          this.ele_alert("未知错误！", "error");
           console.log(error);
         }
 
@@ -113,30 +113,55 @@ exports.install = function (Vue, options) {
       this.$axios.post(url, data).then((res) => {
         successCallback(res)
       }).catch((error) => {
-        if(errorCallback){
+        if (errorCallback) {
           errorCallback(error)
         }
-        if(error.response){
-          this.ele_alert("系统错误，请稍后再试！ [Type:"+type+" , Status code:"+error.response.status+"]","error");
-        }else {
-          this.ele_alert("未知错误！","error");
+        if (error.response) {
+          this.ele_alert("系统错误，请稍后再试！ [Type:" + type + " , Status code:" + error.response.status + "]", "error");
+        } else {
+          this.ele_alert("未知错误！", "error");
           console.log(error);
         }
 
 
       });
-    } else if (type === "put") {
+    }else if (type === "post2") {
+      let p="";
+      for (let item in data ){
+        if (data.hasOwnProperty(item)){
+          p+=item+"="+data[item]+"&"
+        }
+
+      }
+      console.log(p);
+      this.$axios.post(url+"?"+p).then((res) => {
+        successCallback(res)
+      }).catch((error) => {
+        if (errorCallback) {
+          errorCallback(error)
+        }
+        if (error.response) {
+          this.ele_alert("系统错误，请稍后再试！ [Type:" + type + " , Status code:" + error.response.status + "]", "error");
+        } else {
+          this.ele_alert("未知错误！", "error");
+          console.log(error);
+        }
+
+
+      });
+    }
+    else if (type === "put") {
       this.$axios.put(url, data).then((res) => {
 
         successCallback(res)
       }).catch((error) => {
-        if(errorCallback){
+        if (errorCallback) {
           errorCallback(error)
         }
-        if(error.response){
-          this.ele_alert("系统错误，请稍后再试！ [Type:"+type+" , Status code:"+error.response.status+"]","error");
-        }else {
-          this.ele_alert("未知错误！","error");
+        if (error.response) {
+          this.ele_alert("系统错误，请稍后再试！ [Type:" + type + " , Status code:" + error.response.status + "]", "error");
+        } else {
+          this.ele_alert("未知错误！", "error");
           console.log(error);
         }
 
@@ -145,19 +170,19 @@ exports.install = function (Vue, options) {
       this.$axios.delete(url, {params: data}).then((res) => {
         successCallback(res);
       }).catch((error) => {
-        if(errorCallback){
+        if (errorCallback) {
           errorCallback(error)
         }
-        if(error.response){
-          this.ele_alert("系统错误，请稍后再试！ [Type:"+type+" , Status code:"+error.response.status+"]","error");
-        }else {
-          this.ele_alert("未知错误！","error");
+        if (error.response) {
+          this.ele_alert("系统错误，请稍后再试！ [Type:" + type + " , Status code:" + error.response.status + "]", "error");
+        } else {
+          this.ele_alert("未知错误！", "error");
           console.log(error);
         }
 
       });
     } else {
-      this.ele_alert("请求类型错误！","error")
+      this.ele_alert("请求类型错误！", "error")
     }
   };
 

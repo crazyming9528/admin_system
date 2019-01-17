@@ -109,7 +109,7 @@
 
       },
       getSlider() {
-        this.requestApiFnc("/NewsTurn/getAll", "get", null, (res) => {
+        this.requestApiFnc("/newsTurn/getAll", "get", null, (res) => {
 
           const {data: {code, map: {turn}, message, success}} = res;
           if (code !== 200) {
@@ -181,7 +181,7 @@
         if (check) {
           // this.tips("保存成功！","success");
 
-          this.requestApiFnc("/NewsTurn/addList", "post", {
+          this.requestApiFnc("/newsTurn/addList", "post", {
             request: this.sliderData
           }, (res) => {
             console.log(res);
