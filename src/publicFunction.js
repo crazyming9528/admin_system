@@ -101,6 +101,10 @@ exports.install = function (Vue, options) {
           errorCallback(error)
         }
         if (error.response) {
+          if(error.response.status===403){
+            this.ele_alert("无权访问", "error");
+            return;
+          }
           this.ele_alert("系统错误，请稍后再试！ [Type:" + type + " , Status code:" + error.response.status + "]", "error");
         } else {
           this.ele_alert("未知错误！", "error");
@@ -117,6 +121,10 @@ exports.install = function (Vue, options) {
           errorCallback(error)
         }
         if (error.response) {
+          if(error.response.status===403){
+            this.ele_alert("无权访问", "error");
+            return;
+          }
           this.ele_alert("系统错误，请稍后再试！ [Type:" + type + " , Status code:" + error.response.status + "]", "error");
         } else {
           this.ele_alert("未知错误！", "error");
@@ -141,6 +149,10 @@ exports.install = function (Vue, options) {
           errorCallback(error)
         }
         if (error.response) {
+          if(error.response.status===403){
+            this.ele_alert("无权访问", "error");
+            return;
+          }
           this.ele_alert("系统错误，请稍后再试！ [Type:" + type + " , Status code:" + error.response.status + "]", "error");
         } else {
           this.ele_alert("未知错误！", "error");
@@ -159,6 +171,10 @@ exports.install = function (Vue, options) {
           errorCallback(error)
         }
         if (error.response) {
+          if(error.response.status===403){
+            this.ele_alert("无权访问", "error");
+            return;
+          }
           this.ele_alert("系统错误，请稍后再试！ [Type:" + type + " , Status code:" + error.response.status + "]", "error");
         } else {
           this.ele_alert("未知错误！", "error");
@@ -174,6 +190,10 @@ exports.install = function (Vue, options) {
           errorCallback(error)
         }
         if (error.response) {
+          if(error.response.status===403){
+            this.ele_alert("无权访问", "error");
+            return;
+          }
           this.ele_alert("系统错误，请稍后再试！ [Type:" + type + " , Status code:" + error.response.status + "]", "error");
         } else {
           this.ele_alert("未知错误！", "error");

@@ -16,8 +16,7 @@
           <div class="userInfo">
             <div class="avatar"><img src="../assets/other-img/avatar.jpg" height="45" width="45"/></div>
             <el-dropdown trigger="click">
-  <span class="el-dropdown-link">
-    song<i class="el-icon-caret-bottom el-icon--right"></i>
+  <span class="el-dropdown-link">super<i class="el-icon-caret-bottom el-icon--right"></i>
   </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
@@ -137,7 +136,7 @@
 
       }, logOff() {
         // this.$store.commit('setLogin', 0);
-        this.setStorage("login", "0");
+        this.removeStorage('login');
         this.tips("注销成功","success");
         this.$router.push({path: "/login"});
       },
@@ -156,7 +155,7 @@
       // 使用sessionStorage模拟登录状态
       var login = this.getStorage("login");
       console.log(login);
-      if (login == null || login == "0") {
+      if (login == null){
         console.log("没有登录");
         this.$router.push({path: "/login"});
       } else {

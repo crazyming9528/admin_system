@@ -53,7 +53,7 @@
               password:this.form.password,
             },(res)=>{
               console.log(res.data.map.token);
-              this.setStorage("login",res.data.map.token);
+              this.setStorage("login",this.$base64.encode(res.data.map.token));
               this.tips("登录成功","success");
               this.$router.push({path: "/home"});
             });
