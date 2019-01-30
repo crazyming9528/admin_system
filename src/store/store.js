@@ -17,9 +17,16 @@ const store = new Vuex.Store({
       beian:"",
       name: "",
     },
+    userInfo:{
+      name:""
+
+    },
     isLogin:{
       state:0
     }
+
+
+
 
   },
   mutations: {

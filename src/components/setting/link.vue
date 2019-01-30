@@ -32,10 +32,10 @@
                 @dragstart="drag($event,index)" @drop="drop($event,index)" @dragover='allowDrop($event)'>
               <div class="li_item order">{{index+1}}</div>
               <div class="li_item title"><input v-model.trim="item.name" type="text" placeholder="请输入站点名称"></div>
-              <div class="li_item url"><input v-model.trim="item.url" type="text"
+              <div class="li_item url"><input v-model.trim="item.linkUrl" type="text"
                                               placeholder="链接需加上 http:// 或 https://">
               </div>
-              <div class="li_item description"><input v-model.trim="item.description" type="text" placeholder="请输入描述">
+              <div class="li_item description"><input v-model.trim="item.remark" type="text" placeholder="请输入描述">
               </div>
               <div class="li_item option">
                 <el-button type="text" @click="deleteLink(index)">删除</el-button>
@@ -63,27 +63,28 @@
     name: "link",
     data() {
       return {
-        linkData: [
-          {name: '百度', url: 'wwww.baidu.com', description: 'baidu'},
-          {name: '腾讯网', url: 'wwww.qq.com', description: 'tencent'},
-          {name: '新浪微博', url: 'https://www.weibo.com/', description: 'weibo'},
-          {name: '今日头条', url: 'https://www.toutiao.com/', description: 'bytedance'},
-          {name: '哔哩哔哩', url: 'https://www.bilibili.com/', description: 'bilibili'}
-        ],
+        // linkData: [
+        //   {name: '百度', url: 'wwww.baidu.com', description: 'baidu'},
+        //   {name: '腾讯网', url: 'wwww.qq.com', description: 'tencent'},
+        //   {name: '新浪微博', url: 'https://www.weibo.com/', description: 'weibo'},
+        //   {name: '今日头条', url: 'https://www.toutiao.com/', description: 'bytedance'},
+        //   {name: '哔哩哔哩', url: 'https://www.bilibili.com/', description: 'bilibili'}
+        // ],
+        linkData:[],
         fullscreenLoading: false
       }
     },
     methods: {
 
       getLink() {
-        this.requestApiFnc("/newsTurn/getAll", "get", null, (res) => {
+        this.requestApiFnc("/blogRoll/getAll", "get", null, (res) => {
 
-          const {data: {code, map: {turn}, message, success}} = res;
+          const {data: {code, map: {BlogRoll}, message, success}} = res;
           if (code !== 200) {
             this.ele_alert(message, "error");
             return;
           }
-          this.linkData = turn;
+          this.linkData = BlogRoll;
 
         })
 
@@ -108,11 +109,9 @@
       },
       saveLink() {
 
-        return;
-
         let check = true;
         this.linkData.forEach((item) => {
-          if (item.newsTitle === "" || item.rUrl === "" || item.imgUrl === "" || item.remark === "") {
+          if (item.name === "" || item.linkUrl === "" || item.remark === "") {
             check = false;
           }
         });
@@ -120,7 +119,7 @@
         if (check) {
           // this.tips("保存成功！","success");
 
-          this.requestApiFnc("/newsTurn/addList", "post", {
+          this.requestApiFnc("/blogRoll/addList", "post", {
             request: this.linkData
           }, (res) => {
             console.log(res);
@@ -182,7 +181,7 @@
     },
     created() {
       this.toTop();
-      // this.getLink();
+      this.getLink();
     }
   }
 </script>

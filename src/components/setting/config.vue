@@ -22,48 +22,51 @@
 
         <el-col :span="24">
           <el-form ref="form" :model="form" label-width="100px">
-            <el-form-item label="网站LOGO">
+            <el-form-item style="position: relative" label="网站LOGO">
               <el-upload
-                class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                :action="uploadUrl"
+                :limit="1"
+                :headers="setHeader"
+                :multiple="false"
+                :on-error="uploadError"
+                :on-remove="handleRemove"
+                :on-success="uploadSuccess"
+                list-type="picture-card">
+                <i class="el-icon-plus"></i>
               </el-upload>
+              <img :src="form.logo" style="width: 150px;position: absolute;top:50%;transform: translateY(-50%);left: 400px"  alt="">
             </el-form-item>
-            <el-form-item label="网站标题" >
-              <el-input v-model="form.name" placeholder="网站显示的标题"></el-input>
+            <el-form-item label="网站标题">
+              <el-input v-model="form.title" placeholder="网站显示的标题"></el-input>
             </el-form-item>
             <el-form-item label="网站关键词">
-              <el-input  v-model="form.keyword" placeholder="以英文逗号隔开 用于SEO优化"></el-input>
+              <el-input v-model="form.keyword" placeholder="以英文逗号隔开 用于SEO优化"></el-input>
             </el-form-item>
             <el-form-item label="网站标语">
-              <el-input  v-model="form.keyword" placeholder="网站slogan  宣传口号"></el-input>
+              <el-input v-model="form.slogan" placeholder="网站slogan  宣传口号"></el-input>
             </el-form-item>
             <el-form-item label="网站描述">
-              <el-input type="textarea" v-model="form.desc" placeholder="描述网站的主要功能与内容 用于SEO优化"></el-input>
+              <el-input type="textarea" v-model="form.remark" placeholder="描述网站的主要功能与内容 用于SEO优化"></el-input>
             </el-form-item>
             <!--<el-form-item label="活动区域">-->
-              <!--<el-select v-model="form.region" placeholder="请选择活动区域">-->
-                <!--<el-option label="区域一" value="shanghai"></el-option>-->
-                <!--<el-option label="区域二" value="beijing"></el-option>-->
-              <!--</el-select>-->
+            <!--<el-select v-model="form.region" placeholder="请选择活动区域">-->
+            <!--<el-option label="区域一" value="shanghai"></el-option>-->
+            <!--<el-option label="区域二" value="beijing"></el-option>-->
+            <!--</el-select>-->
             <!--</el-form-item>-->
             <el-form-item label="是否开启网站">
               <el-switch v-model="form.open"></el-switch>
             </el-form-item>
             <el-form-item label="是否允许登录">
-              <el-switch v-model="form.open"></el-switch>
+              <el-switch v-model="form.login"></el-switch>
             </el-form-item>
             <el-form-item label="是否允许注册">
-              <el-switch v-model="form.open"></el-switch>
+              <el-switch v-model="form.register"></el-switch>
             </el-form-item>
 
 
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">保存</el-button>
+              <el-button type="primary" @click="saveConfig()">保存</el-button>
               <el-button>取消</el-button>
             </el-form-item>
           </el-form>
@@ -71,49 +74,96 @@
       </el-row>
 
 
-
-
     </div>
   </div>
 </template>
 
 <script>
-    export default {
-        name: "config",
-      data(){
-        return {
-          form: {
-            name: '',
-            keyword:"",
-            desc: '',
-            region: '',
-            date1: '',
-            date2: '',
-            open: false,
-            imageUrl: ''
-          }
-        }
-      },method:{
-        onSubmit() {
-          console.log('submit!');
-        },
-        handleAvatarSuccess(res, file) {
-          this.imageUrl = URL.createObjectURL(file.raw);
-        },
-        beforeAvatarUpload(file) {
-          const isJPG = file.type === 'image/jpeg';
-          const isLt2M = file.size / 1024 / 1024 < 2;
-
-          if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG 格式!');
-          }
-          if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!');
-          }
-          return isJPG && isLt2M;
+  export default {
+    name: "config",
+    data() {
+      return {
+        uploadUrl: window.CUIT_server.API_ROOT + "/user/uploadImg",
+        setHeader: {Authorization: Base64.decode(JSON.parse(localStorage.getItem('login')))},
+        form: {
+          title: '',
+          keyword: "",
+          slogan: '',
+          remark: '',
+          open: false,
+          login: false,
+          register: false,
+          logo: ''
         }
       }
+    }, methods: {
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      uploadSuccess(response, file, fileList) {
+        console.log(response, file, fileList);
+        this.form.logo = window.CUIT_server.API_ROOT + "/" + response.map.url;
+        console.log(this.form.logo);
+      },
+      uploadError(err, file, fileList) {
+        console.log(err, file, fileList)
+      },
+      onSubmit() {
+        console.log('submit!');
+      },
+      handleAvatarSuccess(res, file) {
+        this.logo = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
+      saveConfig() {
+        this.requestApiFnc('/systemSetting/add', 'post', {
+          title: this.form.title,
+          keyword: this.form.keyword,
+          slogan: this.form.slogan,
+          remark: this.form.remark,
+          open: this.form.open ? 1 : 0,
+          login: this.form.login ? 1 : 0,
+          register: this.form.register ? 1 : 0,
+          logo: this.form.logo
+        },(res)=>{
+          const {code,map,message} = res.data;
+         if (code===200){
+
+         }
+        })
+      },
+      getConfig() {
+        this.requestApiFnc('/systemSetting/get','get',null,(res)=>{
+         const {code,map:{SystemSetting},message} = res.data;
+        if (code === 200){
+          this.form.logo = SystemSetting.logo;
+          this.form.title = SystemSetting.title;
+          this.form.keyword = SystemSetting.keyword;
+          this.form.slogan = SystemSetting.slogan;
+          this.form.remark = SystemSetting.remark;
+          SystemSetting.open === 1 ? this.form.open = true : this.form.open =  false;
+          SystemSetting.login === 1 ? this.form.login = true : this.form.login =  false;
+          SystemSetting.register === 1 ? this.form.register = true : this.form.oregister =  false;
+        }
+        })
+      }
+
+    },
+    created() {
+      this.getConfig();
     }
+  }
 </script>
 
 <style scoped>

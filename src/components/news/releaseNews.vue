@@ -27,6 +27,7 @@
             <el-upload
               :action="uploadUrl"
               :limit="1"
+              :headers="setHeader"
               :multiple="false"
               :on-error="uploadError"
               :on-remove="handleRemove"
@@ -80,6 +81,7 @@
     data() {
       return {
         uploadUrl:window.CUIT_server.API_ROOT+"/user/uploadImg",
+        setHeader:{Authorization: Base64.decode(JSON.parse(localStorage.getItem('login')))},
         form: {
           id:'',//仅 更新 新闻的时候使用
           title: '',
@@ -274,7 +276,7 @@
       },
       initEditModel(nid){
 
-        this.requestApiFnc(`/news/getnewsById`,`get`,{
+        this.requestApiFnc(`/news/getNewsById`,`get`,{
           newsId:nid
         },(res)=>{
           console.log(res);

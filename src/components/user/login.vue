@@ -55,11 +55,21 @@
               console.log(res.data.map.token);
               this.setStorage("login",this.$base64.encode(res.data.map.token));
               this.tips("登录成功","success");
-              this.$router.push({path: "/home"});
+              // this.$router.push({path: "/home"});
+              this.getUserInfo();
             });
 
 
           },
+        getUserInfo(){
+            this.requestApiFnc("/user/getUserByToken","get",null,(res)=>{
+
+              console.log(res);
+return;
+              this.$router.push({path: "/home"});
+
+            })
+        },
 
         register(){
           this.tips("注册还没有做","warning");
