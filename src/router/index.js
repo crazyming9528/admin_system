@@ -12,6 +12,10 @@ import CommentManagement from '@/components/news/commentsManagement'
 import Link from '@/components/setting/link'
 
 
+import Building from '@/components/repairs/building'
+import RepairsOrder from '@/components/repairs/repairOrder'
+
+
 
 import UserManagement from '@/components/user/userManagement'
 import Role from '@/components/user/role'
@@ -88,6 +92,15 @@ export default new Router({
           path: 'link',
           name: 'link',
           component: Link
+        },{
+          path: 'repairs_building',
+          name: 'repairs_building',
+          component: Building,
+        },
+        {
+          path: 'repairs_order',
+          name: 'repairs_order',
+          component: RepairsOrder,
         }
 
       ]

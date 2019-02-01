@@ -78,8 +78,16 @@
               <el-menu-item index="/userManagement">用户管理</el-menu-item>
               <el-menu-item index="/role">角色与权限</el-menu-item>
             </el-submenu>
-
             <el-submenu index="5">
+              <template slot="title">
+                <i class="fa fa-cog"></i>
+                <span>设施报修</span>
+              </template>
+              <el-menu-item index="/repairs_order">报修订单管理</el-menu-item>
+              <el-menu-item index="/repairs_building">楼宇管理</el-menu-item>
+            </el-submenu>
+
+            <el-submenu index="6">
               <template slot="title">
                 <i class="fa fa-cog"></i>
                 <span>系统设置</span>
@@ -108,7 +116,7 @@
       return {
         isCollapse: false,
         nowTime: "",
-        user:{}
+        user: {}
       }
     },
     computed: {
@@ -118,7 +126,7 @@
       activeMenuIndex: function () {
         return this.$route.path;
       },
-      systemInfo(){
+      systemInfo() {
         return this.$store.state.systemInfo;
       }
 
@@ -141,16 +149,16 @@
       }, logOff() {
         // this.$store.commit('setLogin', 0);
         this.removeStorage('login');
-        this.tips("注销成功","success");
+        this.tips("注销成功", "success");
         this.$router.push({path: "/login"});
       },
 
-      getUserInfo(){
+      getUserInfo() {
         const u = this.getStorage('user');
-        if (u){
-         this.user=JSON.parse(this.$base64.decode(u))
+        if (u) {
+          this.user = JSON.parse(this.$base64.decode(u))
           console.log(this.user);
-        }else{
+        } else {
           this.ele_alert("获取用户信息失败！", "error");
         }
       }
@@ -161,7 +169,7 @@
         this.nowTime = this.showTime();
       }, 1000);
 
-this.getUserInfo();
+      this.getUserInfo();
       // setTimeout(()=>{
       //   this.toggleNav();
       // },3500)
@@ -219,6 +227,7 @@ this.getUserInfo();
         height: 50px;
         position: relative;
         vertical-align: top;
+
         img {
           width: 50%;
           height: 50%;
@@ -228,24 +237,30 @@ this.getUserInfo();
           transform: translate(-50%, -50%);
         }
       }
+
       span {
         vertical-align: top;
       }
     }
+
     .right {
       float: right;
+
       .time {
         display: inline-block;
         vertical-align: top;
         color: white;
       }
+
       .userInfo {
         display: inline-block;
+
         .avatar {
           display: inline-block;
           width: 50px;
           height: 50px;
           position: relative;
+
           img {
             width: 50%;
             height: 50%;
@@ -255,10 +270,12 @@ this.getUserInfo();
             transform: translate(-50%, -50%);
           }
         }
+
         .el-dropdown {
           display: inline-block;
           vertical-align: top;
           cursor: pointer;
+
           .el-dropdown-link {
             color: $fontColor2;
           }
@@ -271,14 +288,17 @@ this.getUserInfo();
     background-color: $baseColor2;
     color: #333;
     width: auto !important;
-    .fa{
+
+    .fa {
       font-size: 18px;
       margin-right: 8px;
     }
+
     .logo {
       width: 100%;
       text-align: center;
       padding: 35px 0;
+
       img {
         width: 40%;
         border-radius: 50%;
