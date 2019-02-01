@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-
     <router-view></router-view>
     <!--<img src="./assets/logo.png">-->
 
@@ -15,6 +14,28 @@
 
       }
     },
+    computed:{
+      systemInfo(){
+        return this.$store.getters.getSystemInfo;
+      }
+    },
+    methods:{
+      getSystemInfo() {
+        this.requestApiFnc('/systemSetting/get','get',null,(res)=>{
+          const {code,map:{SystemSetting},message} = res.data;
+          if (code === 200){
+            console.log(SystemSetting);
+            this.$store.commit('setSystem',SystemSetting)
+
+          }
+        })
+      },
+
+    },
+    created(){
+      console.log(this.systemInfo);
+      this.getSystemInfo();
+    }
 
 
 

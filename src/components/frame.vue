@@ -4,7 +4,7 @@
       <el-header class="frame-header">
         <div class="left wow fadeInLeft">
           <div class="logo" v-show="isCollapse"><img src="../assets/logo.png" alt="logo"/></div>
-          <span><em>CUIT</em> 校园服务平台管理系统</span>
+          <span><em>{{this.$store.getters.systemInfo.title}}</em> 管理系统</span>
           <el-tooltip class="item" effect="dark" content="点击这里可以展开和收起侧栏菜单~" manual value placement="right-start">
             <el-button style="margin-left: 20px;font-weight: bold" type="text" size="mini" @click="toggleNav"
                        icon="el-icon-menu">切换菜单
@@ -16,7 +16,7 @@
           <div class="userInfo">
             <div class="avatar"><img src="../assets/other-img/avatar.jpg" height="45" width="45"/></div>
             <el-dropdown trigger="click">
-  <span class="el-dropdown-link">super<i class="el-icon-caret-bottom el-icon--right"></i>
+  <span class="el-dropdown-link">{{this.user.userName}}<i class="el-icon-caret-bottom el-icon--right"></i>
   </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
@@ -107,7 +107,8 @@
     data() {
       return {
         isCollapse: false,
-        nowTime: ""
+        nowTime: "",
+        user:{}
       }
     },
     computed: {
@@ -116,6 +117,9 @@
       },
       activeMenuIndex: function () {
         return this.$route.path;
+      },
+      systemInfo(){
+        return this.$store.state.systemInfo;
       }
 
     },
@@ -140,27 +144,38 @@
         this.tips("注销成功","success");
         this.$router.push({path: "/login"});
       },
+
+      getUserInfo(){
+        const u = this.getStorage('user');
+        if (u){
+         this.user=JSON.parse(this.$base64.decode(u))
+          console.log(this.user);
+        }else{
+          this.ele_alert("获取用户信息失败！", "error");
+        }
+      }
+
     },
     created() {
       setInterval(() => {
         this.nowTime = this.showTime();
       }, 1000);
 
-
+this.getUserInfo();
       // setTimeout(()=>{
       //   this.toggleNav();
       // },3500)
 
 
       // 使用sessionStorage模拟登录状态
-      var login = this.getStorage("login");
-      console.log(login);
-      if (login == null){
-        console.log("没有登录");
-        this.$router.push({path: "/login"});
-      } else {
-        console.log("模拟登录成功");
-      }
+      // var login = this.getStorage("login");
+      // console.log(login);
+      // if (login == null){
+      //   console.log("没有登录");
+      //   this.$router.push({path: "/login"});
+      // } else {
+      //   console.log("模拟登录成功");
+      // }
 
 
     }

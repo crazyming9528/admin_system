@@ -62,14 +62,23 @@
 
           },
         getUserInfo(){
-            this.requestApiFnc("/user/getUserByToken","get",null,(res)=>{
+            this.requestApiFnc("/user/getUserByToken","get",{token:this.$base64.decode(this.getStorage('login'))},(res)=>{
 
-              console.log(res);
-return;
-              this.$router.push({path: "/home"});
+              const {code,map:{user},message} = res.data;
+              if (code === 200){
+
+                this.setStorage('user',this.$base64.encode(JSON.stringify(user)));
+                console.log(this.getStorage('user'));
+                console.log(this.$base64.decode(this.getStorage('user')));
+                console.log(JSON.parse(this.$base64.decode(this.getStorage('user'))));
+                this.$router.push({path: "/home"});
+              }
+
+
 
             })
         },
+
 
         register(){
           this.tips("注册还没有做","warning");

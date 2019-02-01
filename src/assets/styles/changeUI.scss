@@ -89,3 +89,9 @@
 .el-loading-text{
   //color: white!important;
 }
+
+
+//  加载请求时  鼠标的效果
+.is-fullscreen{
+  cursor:wait;
+}

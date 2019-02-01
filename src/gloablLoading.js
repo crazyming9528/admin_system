@@ -14,7 +14,6 @@ import {Loading} from "element-ui";
   }
 
   startLoading() {
-
     this.lo = Loading.service({
       lock: true,
       // target: document.querySelector(".el-main"),
@@ -36,6 +35,7 @@ import {Loading} from "element-ui";
   }
 
   endLoading() {
+
     this.lo.close()
 
   }

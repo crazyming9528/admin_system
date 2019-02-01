@@ -56,7 +56,7 @@ http.interceptors.response.use(function (response) {
     // tryHideFullScreenLoading();
     globalLoading.tryHideFullScreenLoading();
   }, 300);
-
+console.log(response)
   // 对响应数据做点什么
   return response;
 }, function (error) {

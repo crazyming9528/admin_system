@@ -96,7 +96,14 @@
           logo: ''
         }
       }
-    }, methods: {
+    },
+    computed:{
+      systemInfo:function () {
+        return this.$store.getters.systemInfo;
+      }
+
+    },
+    methods: {
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -140,28 +147,40 @@
           const {code,map,message} = res.data;
          if (code===200){
 
+           this.getSystemInfo();//  更新数据
+
          }
         })
       },
+       //从vuex 获取
       getConfig() {
-        this.requestApiFnc('/systemSetting/get','get',null,(res)=>{
-         const {code,map:{SystemSetting},message} = res.data;
-        if (code === 200){
-          this.form.logo = SystemSetting.logo;
-          this.form.title = SystemSetting.title;
-          this.form.keyword = SystemSetting.keyword;
-          this.form.slogan = SystemSetting.slogan;
-          this.form.remark = SystemSetting.remark;
-          SystemSetting.open === 1 ? this.form.open = true : this.form.open =  false;
-          SystemSetting.login === 1 ? this.form.login = true : this.form.login =  false;
-          SystemSetting.register === 1 ? this.form.register = true : this.form.oregister =  false;
+        for (let item in this.systemInfo){
+          if (this.systemInfo.hasOwnProperty(item)){
+            if (this.systemInfo[item] === 1){
+              this.form[item] = true;
+            } else if (this.systemInfo[item] === 0) {
+              this.form[item] = false;
+            }else {
+              this.form[item] = this.systemInfo[item];
+            }
+          }
         }
+      },
+   // 从网络获取
+      getSystemInfo() {
+        this.requestApiFnc('/systemSetting/get','get',null,(res)=>{
+          const {code,map:{SystemSetting},message} = res.data;
+          if (code === 200){
+            console.log(SystemSetting);
+            this.$store.commit('setSystem',SystemSetting)
+          }
         })
-      }
+      },
 
     },
     created() {
       this.getConfig();
+      console.log(this.systemInfo);
     }
   }
 </script>
