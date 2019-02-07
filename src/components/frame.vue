@@ -72,20 +72,21 @@
             </el-submenu>
             <el-submenu index="4">
               <template slot="title">
-                <i class="fa fa-users"></i>
-                <span>用户</span>
-              </template>
-              <el-menu-item index="/userManagement">用户管理</el-menu-item>
-              <el-menu-item index="/role">角色与权限</el-menu-item>
-            </el-submenu>
-            <el-submenu index="5">
-              <template slot="title">
                 <i class="fa fa-cog"></i>
                 <span>设施报修</span>
               </template>
               <el-menu-item index="/repairs_order">报修订单管理</el-menu-item>
               <el-menu-item index="/repairs_building">楼宇管理</el-menu-item>
             </el-submenu>
+            <el-submenu index="5">
+              <template slot="title">
+                <i class="fa fa-users"></i>
+                <span>用户</span>
+              </template>
+              <el-menu-item index="/userManagement">用户管理</el-menu-item>
+              <el-menu-item index="/role">角色与权限</el-menu-item>
+            </el-submenu>
+
 
             <el-submenu index="6">
               <template slot="title">
