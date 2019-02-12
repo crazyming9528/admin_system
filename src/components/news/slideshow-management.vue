@@ -13,7 +13,7 @@
       <el-row class="headArea wow fadeInDown panelArea" data-wow-delay="0.3s">
         <el-col :span="24">
           <span class="title">轮播图管理</span>
-          <span class="description">系统首页轮播图管理</span>
+          <span class="description">系统首页轮播图管理(拖拽列表可进行排序)</span>
         </el-col>
       </el-row>
 

@@ -141,15 +141,12 @@
       },
       toggleNav() {
 
-        if (this.isCollapse) {
-          this.isCollapse = false;
-        } else {
-          this.isCollapse = true;
-        }
+        this.isCollapse = !this.isCollapse;
 
       }, logOff() {
         // this.$store.commit('setLogin', 0);
         this.removeStorage('login');
+        this.removeStorage('user');
         this.tips("注销成功", "success");
         this.$router.push({path: "/login"});
       },
@@ -157,10 +154,12 @@
       getUserInfo() {
         const u = this.getStorage('user');
         if (u) {
-          this.user = JSON.parse(this.$base64.decode(u))
+          this.user = JSON.parse(this.$base64.decode(u));
           console.log(this.user);
         } else {
+
           this.ele_alert("获取用户信息失败！", "error");
+          this.$router.push({path: "/login"});
         }
       }
 
