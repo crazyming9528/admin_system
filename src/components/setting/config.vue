@@ -67,7 +67,7 @@
 
             <el-form-item>
               <el-button type="primary" @click="saveConfig()">保存</el-button>
-              <el-button>取消</el-button>
+              <!--<el-button>取消</el-button>-->
             </el-form-item>
           </el-form>
         </el-col>
@@ -146,7 +146,7 @@
         },(res)=>{
           const {code,map,message} = res.data;
          if (code===200){
-
+           this.ele_alert("保存成功",'success');
            this.getSystemInfo();//  更新数据
 
          }
@@ -154,17 +154,19 @@
       },
        //从vuex 获取
       getConfig() {
-        for (let item in this.systemInfo){
-          if (this.systemInfo.hasOwnProperty(item)){
-            if (this.systemInfo[item] === 1){
-              this.form[item] = true;
-            } else if (this.systemInfo[item] === 0) {
-              this.form[item] = false;
+        let ob = this.systemInfo;
+        for (let property in ob){
+          if (ob.hasOwnProperty(property)){
+            if (this.systemInfo[property] === 1){
+              this.form[property] = true;
+            } else if (this.systemInfo[property] === 0) {
+              this.form[property] = false;
             }else {
-              this.form[item] = this.systemInfo[item];
+              this.form[property] = this.systemInfo[property];
             }
           }
         }
+
       },
    // 从网络获取
       getSystemInfo() {
@@ -179,7 +181,11 @@
 
     },
     created() {
-      this.getConfig();
+
+
+      setTimeout(()=>{
+        this.getConfig();
+      },1500);
       console.log(this.systemInfo);
     }
   }

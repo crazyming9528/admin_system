@@ -82,6 +82,7 @@
       return {
         uploadUrl:window.CUIT_server.API_ROOT+"/user/uploadImg",
         setHeader:{Authorization: Base64.decode(JSON.parse(localStorage.getItem('login')))},
+        user:"",
         form: {
           id:'',//仅 更新 新闻的时候使用
           title: '',
@@ -210,7 +211,7 @@
 
        const data={
          title:this.form.title,
-         author:"3f3ff415-b27f-46cd-bf4d-17b8b14836a8",
+         author:this.user,
          // type:"默认",
          type:this.form.type,
          digest:this.form.digest,
@@ -282,6 +283,7 @@
           console.log(res);
           const {data:{code,map:{news},message}} = res;
           if (code===200){
+            this.user=news.author;
             this.form.id = news.id;
             this.form.title=news.title;
             this.form.digest=news.digest;
@@ -312,6 +314,9 @@
     created() {
       this.toTop();
       this. getNewsType();
+      const u = this.getStorage('user');
+      this.user = JSON.parse(this.$base64.decode(u)).id;
+      console.dir(this.user);
       const action = this.$route.query.action;
       const newsId = this.$route.query.newsId;
       if(action && newsId){

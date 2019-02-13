@@ -153,18 +153,13 @@
       },
 
       getUserInfo() {
+        const l = this.getStorage('login');
         const u = this.getStorage('user');
-        if (u) {
+        if (u && l) {
           this.user = JSON.parse(this.$base64.decode(u));
           console.log(this.user);
-
-          if (!this.getStorage('r')){
-            this.setStorage('r','1111');
-            window.location.href="http://cuit.crazyming.cn/admin"
-          }
         } else {
-
-          this.ele_alert("获取用户信息失败！", "error");
+          // this.ele_alert("获取用户信息失败！", "error");
           this.$router.push({path: "/login"});
         }
       }
