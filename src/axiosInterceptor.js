@@ -28,14 +28,16 @@ http.interceptors.request.use(function (config) {
     config.headers.Authorization = Base64.decode(JSON.parse(token));   //将token放到请求头发送给服务器
   } else {
 
+    console.log(config.url)
+
     //检测请求是不是登录接口
-    if (config.url.indexOf("login") !== -1) {
+    if (config.url.indexOf("login" ) !== -1  ) {
       console.log("没有登录");
       router.push({path: "/login"});
 
     } else {
 
-      console.log("登录接口 无需校验")
+      console.log("登录接口和获取系统信息接口 无需校验")
 
     }
 

@@ -147,6 +147,7 @@
         // this.$store.commit('setLogin', 0);
         this.removeStorage('login');
         this.removeStorage('user');
+        this.removeStorage('r');
         this.tips("注销成功", "success");
         this.$router.push({path: "/login"});
       },
@@ -156,6 +157,11 @@
         if (u) {
           this.user = JSON.parse(this.$base64.decode(u));
           console.log(this.user);
+
+          if (!this.getStorage('r')){
+            this.setStorage('r','1111');
+            window.location.href="http://cuit.crazyming.cn/admin"
+          }
         } else {
 
           this.ele_alert("获取用户信息失败！", "error");
@@ -168,6 +174,8 @@
       setInterval(() => {
         this.nowTime = this.showTime();
       }, 1000);
+
+
 
       this.getUserInfo();
       // setTimeout(()=>{

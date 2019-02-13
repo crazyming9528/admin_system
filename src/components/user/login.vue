@@ -94,7 +94,8 @@
           console.log("没有登录");
         }else {
           console.log("已经登录了 直接跳到首页");
-          this.$router.push({path: "/home"});
+          // this.$router.push({path: "/home"});
+          this.getUserInfo();
         }
          // this.notify("warning","注意","账号和密码是假数据，直接点击登录即可~~")
       }

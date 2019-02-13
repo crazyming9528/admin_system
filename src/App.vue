@@ -33,8 +33,8 @@
 
     },
     created(){
-      console.log(this.systemInfo);
       this.getSystemInfo();
+      console.log(this.systemInfo);
     }
 
 
