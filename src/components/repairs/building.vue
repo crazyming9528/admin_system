@@ -20,7 +20,7 @@
 
       <el-row class="panelArea ">
         <el-col :span="24">
-          <el-button type="primary">添加 楼宇/区域</el-button>
+          <el-button type="primary" @click="addNewBuilding()">添加 楼宇/区域</el-button>
 
           <el-button type="primary" @click="test()">打印</el-button>
         </el-col>
@@ -29,7 +29,7 @@
 
         <el-col :span="24">
 
-          <Tree :listData="listData" ></Tree>
+          <Tree :listData="listData"></Tree>
 
         </el-col>
 
@@ -41,57 +41,107 @@
 
 <script>
 
-  import  Tree from '../childComponents/tree'
-    export default {
-        name: "building",
-      components:{
-          Tree
-      },
-      data(){
-          return {
-            listData:[
+  import Tree from '../childComponents/tree'
+
+  export default {
+    name: "building",
+    components: {
+      Tree
+    },
+    data() {
+      return {
+        listData: [
+          {
+            title: "航空港校区",
+            expansion: true,
+            type: 'primary',
+            child: [
               {
-                title:"航空港校区",
-                expansion:true,
-                type:'primary',
-                child:[
+                title: "行政楼",
+                child: [],
+              },
+              {
+                title: "男生宿舍",
+                expansion: true,
+                child: [
                   {
-                    title:"行政楼",
-                    child:[],
+                    title: "男生宿舍1栋",
+                    child: [],
                   },
                   {
-                    title:"图书馆",
-                    child:[],
+                    title: "男生宿舍2栋",
+                    child: [],
                   },
                   {
-                    title:"1号食堂",
-                    child:[],
+                    title: "男生宿舍3栋",
+                    child: [],
                   },
                   {
-                    title:"2号食堂",
-                    child:[],
+                    title: "男生宿舍4栋",
+                    child: [],
                   },
-                  {
-                    title:"3号食堂",
-                    child:[],
-                  }
                 ],
               },
               {
-                title:"龙泉校区",
-                expansion:true,
-                type:'primary',
-                child:[],
+                title: "女生宿舍",
+                child: [],
+              },
+              {
+                title: "体育馆",
+                child: [],
+              },
+              {
+                title: "图书馆",
+                child: [],
+              },
+              {
+                title: "1号食堂",
+                child: [],
+              },
+              {
+                title: "2号食堂",
+                child: [],
               }
-          ]
+            ],
+          },
+          {
+            title: "龙泉校区",
+            expansion: true,
+            type: 'primary',
+            child: [
+              {
+                title: "体育馆",
+                child: [],
+              },
+              {
+                title: "图书馆",
+                child: [],
+              },
+              {
+                title: "1号食堂",
+                child: [],
+              },
+            ],
           }
+        ]
+      }
+    },
+    methods: {
+      test() {
+        let text = JSON.stringify(this.listData);
+        console.log(text);
+        console.log(JSON.parse(text))
       },
-      methods:{
-        test() {
-          console.log(this.listData)
-        }
+      addNewBuilding() {
+        this.listData.push({
+          title: "未命名",
+          expansion: true,
+          type: 'primary',
+          child: [],
+        })
       }
     }
+  }
 </script>
 
 <style scoped>
