@@ -3,7 +3,8 @@
   <ul>
     <template v-for="(item,index) in listData">
       <li v-if="item.child.length <= 0" :class="{'primary-menu':item.type==='primary'}" >
-        <a href="javascript:void(0)"><span  v-if="!item.edit">{{item.title}}</span><input v-if="item.edit" type="text" :value="item.title"><button v-if="item.edit" @click="confirmUpdate($event,index)">确认</button> <button v-if="item.edit" @click="update($event,index)">取消</button></a>
+        <a href="javascript:void(0)">
+          <span  v-if="!item.edit">{{item.title}}</span><input v-if="item.edit" type="text" :value="item.title"><button v-if="item.edit" @click="confirmUpdate($event,index)">确认</button> <button v-if="item.edit" @click="update($event,index)">取消</button></a>
         <div class="btn-group" >
           <button v-if="!item.edit" @click="update($event,index)">修改</button>
           <button @click="deleteFn(index)">删除</button>
@@ -117,13 +118,22 @@
   @import "../../assets/styles/base";
 
   .color-blue {
-    color: #4278ff !important;
+    color: #7cc0ff !important;
   }
 
   a {
     color: white;
     text-decoration: none;
     transition: all 0.5s;
+  }
+
+  button{
+    border:none;
+    background: #e7f5f8;
+    padding: 2px;
+    box-sizing: border-box;
+    color: #5d90c0;
+    margin-left: 5px;
   }
 
 
@@ -136,46 +146,53 @@
 
   .primary-menu {
     position: relative;
+    margin-bottom: 10px;
 
     & > a {
       background-color: #A7C4D7;
-      background-image: linear-gradient(120deg, #bfe0f8 10%, #bde9f8 70%);
+      background-image: linear-gradient(120deg, #ebeff8 10%, #bde9f8 70%);
       background-size: 100% 100%;
-      padding: 15px;
+      padding: 10px;
       box-sizing: border-box;
+      border-radius: 3px;
       display: inline-block;
       width: 100%;
-
-      &:hover {
-        background-color: #ef9000;
-      }
     }
-
-    .btn-group {
+  .btn-group{
       position: absolute;
-      top: 0;
-      right: 15px;
+      top: 10px;
+      right: 10px;
+      height: 100%;
+    /*button{*/
+      /*border:none;*/
+      /*background: #e7f5f8;*/
+      /*padding: 2px;*/
+      /*box-sizing: border-box;*/
+      /*color: #1879ff;*/
+    /*}*/
+
     }
 
     ul {
-      padding-left: 50px;
+      padding-left: 20px;
 
       li {
 
-
         position: relative;
 
-        margin-bottom: 15px;
+
 
 
         a {
           color: black;
           width: 100%;
           display: inline-block;
+          padding: 10px;
+          box-sizing: border-box;
 
           &:hover {
-            color: #6ad3ae;
-            background-color: #e4e4e4;
+            color: #7bbdbc!important;
+            background-color: rgba(228, 228, 228, 0.35);
           }
         }
 
@@ -183,11 +200,12 @@
           margin-top: 15px;
         }
 
-        .btn-group {
-          position: absolute;
-          top: 0;
-          right: 15px;
-        }
+        /*.btn-group {*/
+          /*position: absolute;*/
+          /*top: 0;*/
+          /*right: 15px;*/
+
+        /*}*/
 
 
       }

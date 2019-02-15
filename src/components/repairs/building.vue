@@ -128,17 +128,23 @@
     },
     methods: {
       test() {
+        alert("控制台打印  当前 树形数据结构")
         let text = JSON.stringify(this.listData);
         console.log(text);
         console.log(JSON.parse(text))
       },
       addNewBuilding() {
-        this.listData.push({
-          title: "未命名",
-          expansion: true,
-          type: 'primary',
-          child: [],
-        })
+        this.listData.forEach((item)=>{
+          item.expansion = false;
+        });
+        setTimeout(()=>{
+          this.listData.push({
+            title: "未命名",
+            expansion: true,
+            type: 'primary',
+            child: [],
+          })
+        },800);
       }
     }
   }
