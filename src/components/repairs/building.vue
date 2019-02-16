@@ -13,7 +13,7 @@
       <el-row class="headArea wow fadeInDown panelArea" data-wow-delay="0.3s">
         <el-col :span="24">
           <span class="title">楼宇管理</span>
-          <span class="description">校园楼宇管理,可任意在无限极树形中添加修改为报修业务提供楼宇选择.</span>
+          <span class="description">校园楼宇管理,可任意在无限极树形中添加修改楼宇，为报修业务提供楼宇选择。</span>
         </el-col>
       </el-row>
 
