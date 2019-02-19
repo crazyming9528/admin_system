@@ -39,7 +39,7 @@
                   width="180">
                 </el-table-column>
                 <el-table-column
-                  prop="name"
+                  prop="phone"
                   label="联系电话"
                   align="center"
                   width="180">
@@ -60,8 +60,126 @@
               </el-table>
 
             </el-tab-pane>
-            <el-tab-pane label="处理中" name="inProgress">处理中</el-tab-pane>
-            <el-tab-pane label="已处理完成的订单" name="Completed">已处理完成的订单</el-tab-pane>
+            <el-tab-pane label="处理中" name="inProgress">
+              <el-table
+                :data="tableData2"
+                style="width: 100%">
+                <el-table-column
+                  prop="date"
+                  label="报修时间"
+                  align="center"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="name"
+                  label="报修人"
+                  align="center"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="phone"
+                  label="联系电话"
+                  align="center"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="address"
+                  label="报修位置">
+                </el-table-column>
+                <el-table-column
+                  prop="Hdate"
+                  label="开始处理时间"
+                  align="center"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="operator"
+                  label="操作人"
+                  align="center"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="repairman"
+                  label="维修员"
+                  align="center"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  align="center"
+                  fixed="right"
+                  label="操作"
+                  width="100">
+                  <template slot-scope="scope">
+                    <el-button @click="openDetail(scope.row,'正在处理中的订单')" type="text" size="small">查看详情</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+
+            </el-tab-pane>
+            <el-tab-pane label="已处理完成的订单" name="Completed">
+
+              <el-table
+                :data="tableData3"
+                style="width: 100%">
+                <el-table-column
+                  prop="date"
+                  label="报修时间"
+                  align="center"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="name"
+                  label="报修人"
+                  align="center"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="address"
+                  label="报修位置">
+                </el-table-column>
+                <el-table-column
+                  prop="Hdate"
+                  label="开始处理时间"
+                  align="center"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="operator"
+                  label="操作人"
+                  align="center"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="repairman"
+                  label="维修员"
+                  align="center"
+                  width="180">
+                </el-table-column>
+
+                <el-table-column
+                  prop="status"
+                  label="状态"
+                  align="center"
+                  width="180">
+                </el-table-column>
+
+
+                <el-table-column
+                  prop="remark"
+                  label="说明">
+                </el-table-column>
+                <el-table-column
+                  align="center"
+                  fixed="right"
+                  label="操作"
+                  width="100">
+                  <template slot-scope="scope">
+                    <el-button @click="openDetail(scope.row,'已处理完成的订单')" type="text" size="small">查看详情</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+
+            </el-tab-pane>
           </el-tabs>
         </el-col>
       </el-row>
@@ -77,14 +195,22 @@
       <el-dialog :append-to-body="true" :title="orderStatus" :visible.sync="displayDetail">
         <div class="btn-area">
 
-          <el-popover
+          <el-popover v-if="orderStatus === '待处理订单'"
             placement="top"
             width="250"
             v-model="doOrder">
             <el-input
               type="text"
               placeholder="请输入处理该订单的维修员姓名"
-              v-model="cancelText">
+              v-model="repairman">
+            </el-input>
+            <br>
+            <el-input
+              style="margin-top: 5px"
+              type="textarea"
+              :rows="2"
+              placeholder="请输入备注"
+              v-model="remark1">
             </el-input>
             <div style="text-align: right; margin: 10px 0">
               <el-button size="mini" type="text" @click="closeDoOrderFn()" >取消</el-button>
@@ -93,7 +219,7 @@
             <el-button slot="reference" plain  type="success">处理订单</el-button>
           </el-popover>
 
-          <el-popover
+          <el-popover v-if="orderStatus === '正在处理中的订单' || orderStatus === '待处理订单'"
             placement="top"
             width="250"
             v-model="cancelOrder">
@@ -101,13 +227,13 @@
               type="textarea"
               :rows="2"
               placeholder="请输入取消原因"
-              v-model="cancelText">
+              v-model="remark2">
             </el-input>
             <div style="text-align: right; margin: 10px 0">
               <el-button size="mini" type="text" @click="closeCancelOrderFn()">取消</el-button>
               <el-button type="primary" size="mini" @click="visible2 = false">确定</el-button>
             </div>
-            <el-button slot="reference" plain type="warning">取消订单</el-button>
+            <el-button slot="reference" plain type="warning"  >取消订单</el-button>
           </el-popover>
         </div>
         <div class="info">
@@ -147,8 +273,9 @@
         displayDetail:false,
         doOrder:false,
         cancelOrder:false,
-        cancelText:"",
-        doOrderPeople:"",
+        remark1:"",
+        remark2:"",
+        repairman:"",
         orderStatus:"", //订单状态
         detail:{
           name:"",
@@ -159,21 +286,107 @@
           imgUrl:"http://cuit.crazyming.cn/img/zj.jpg"
         },
         tableData: [{
-          date: '2016-05-02',
+          date: '2019-01-02 08:30',
           name: '王小虎',
+          phone:"18581520828",
           address: '上海市普陀区金沙江路 1518 弄'
         }, {
-          date: '2016-05-04',
+          date: '2019-01-02 08:30',
           name: '王小虎',
+          phone:"18581520828",
           address: '上海市普陀区金沙江路 1517 弄'
         }, {
-          date: '2016-05-01',
+          date: '2019-01-02 08:30',
           name: '王小虎',
+          phone:"18581520828",
           address: '上海市普陀区金沙江路 1519 弄'
         }, {
-          date: '2016-05-03',
+          date: '2019-01-02 08:30',
           name: '王小虎',
+          phone:"18581520828",
           address: '上海市普陀区金沙江路 1516 弄'
+        }],
+        tableData2: [{
+          date: '2019-01-02 08:30',
+          Hdate: '2019-01-02 08:30',
+          name: '王小虎',
+          phone:"18581520828",
+          repairman:"",
+          address: '上海市普陀区金沙江路 1518 弄',
+          status:"已取消",
+          operator:"小明",
+          remark:"电话无法联系"
+        }, {
+          date: '2019-01-02 08:30',
+          Hdate: '2019-01-02 08:30',
+          name: '王小虎',
+          phone:"18581520828",
+          repairman:"宋宋宋",
+          address: '上海市普陀区金沙江路 1517 弄',
+          status:"已解决",
+          operator:"小明",
+          remark:"无"
+        }, {
+          date: '2019-01-02 08:30',
+          Hdate: '2019-01-02 08:30',
+          name: '王小虎',
+          phone:"18581520828",
+          repairman:"",
+          address: '上海市普陀区金沙江路 1519 弄',
+          status:"已取消",
+          operator:"小明",
+          remark:"电话无法联系"
+        }, {
+          date: '2019-01-02 08:30',
+          Hdate: '2019-01-02 08:30',
+          name: '王小虎',
+          phone:"18581520828",
+          repairman:"宋宋宋",
+          address: '上海市普陀区金沙江路 1516 弄',
+          status:"已解决",
+          operator:"小明",
+          remark:"无"
+        }],
+        tableData3: [{
+          date: '2019-01-02 08:30',
+          Hdate: '2019-01-02 08:30',
+          name: '王小虎',
+          phone:"18581520828",
+          repairman:"",
+          address: '上海市普陀区金沙江路 1518 弄',
+          status:"已取消",
+          operator:"小明",
+          remark:"电话无法联系"
+        }, {
+          date: '2019-01-02 08:30',
+          Hdate: '2019-01-02 08:30',
+          name: '王小虎',
+          phone:"18581520828",
+          repairman:"宋宋宋",
+          address: '上海市普陀区金沙江路 1517 弄',
+          status:"已解决",
+          operator:"小明",
+          remark:"无"
+        }, {
+          date: '2019-01-02 08:30',
+          Hdate: '2019-01-02 08:30',
+          name: '王小虎',
+          phone:"18581520828",
+          repairman:"",
+          address: '上海市普陀区金沙江路 1519 弄',
+          status:"已取消",
+          operator:"小明",
+          remark:"电话无法联系"
+        }, {
+          date: '2019-01-02 08:30',
+          Hdate: '2019-01-02 08:30',
+          name: '王小虎',
+          phone:"18581520828",
+          repairman:"宋宋宋",
+          address: '上海市普陀区金沙江路 1516 弄',
+          status:"已解决",
+          operator:"小明",
+          remark:"无"
         }]
       }
     },
