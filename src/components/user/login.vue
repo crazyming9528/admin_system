@@ -18,7 +18,7 @@
       <el-button  type="text" @click="register">注册账号</el-button>
     </el-form-item>
   </el-form>
-  <div class="copyright"><span>CUIT Campus Services Management System </span></div>
+  <div class="copyright"><span>CUIT Youth 校内网 管理系统 </span></div>
 </div>
 
 

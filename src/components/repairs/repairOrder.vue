@@ -252,7 +252,8 @@
             <i>报修说明:</i>
             宿舍的门坏了宿舍的门坏了宿舍的门坏了宿舍的门坏了宿舍的门坏了宿舍的门坏了宿舍的门坏了宿舍的门坏了宿舍的门坏了宿舍的门坏了宿舍的门坏了宿舍的门坏了
           </div>
-
+<div style="text-align: left">报修照片:</div>
+          <br>
           <img :src="detail.imgUrl" />
 
         </div>
@@ -289,22 +290,22 @@
           date: '2019-01-02 08:30',
           name: '王小虎',
           phone:"18581520828",
-          address: '上海市普陀区金沙江路 1518 弄'
+          address: '本校区教学楼 102'
         }, {
           date: '2019-01-02 08:30',
           name: '王小虎',
           phone:"18581520828",
-          address: '上海市普陀区金沙江路 1517 弄'
+          address: '本校区教学楼 102'
         }, {
           date: '2019-01-02 08:30',
           name: '王小虎',
           phone:"18581520828",
-          address: '上海市普陀区金沙江路 1519 弄'
+          address: '本校区教学楼 102'
         }, {
           date: '2019-01-02 08:30',
           name: '王小虎',
           phone:"18581520828",
-          address: '上海市普陀区金沙江路 1516 弄'
+          address: '本校区教学楼 102'
         }],
         tableData2: [{
           date: '2019-01-02 08:30',
@@ -312,7 +313,7 @@
           name: '王小虎',
           phone:"18581520828",
           repairman:"",
-          address: '上海市普陀区金沙江路 1518 弄',
+          address: '本校区教学楼 102',
           status:"已取消",
           operator:"小明",
           remark:"电话无法联系"
@@ -322,7 +323,7 @@
           name: '王小虎',
           phone:"18581520828",
           repairman:"宋宋宋",
-          address: '上海市普陀区金沙江路 1517 弄',
+          address: '本校区教学楼 102',
           status:"已解决",
           operator:"小明",
           remark:"无"
@@ -332,7 +333,7 @@
           name: '王小虎',
           phone:"18581520828",
           repairman:"",
-          address: '上海市普陀区金沙江路 1519 弄',
+          address: '本校区教学楼 102',
           status:"已取消",
           operator:"小明",
           remark:"电话无法联系"
@@ -342,7 +343,7 @@
           name: '王小虎',
           phone:"18581520828",
           repairman:"宋宋宋",
-          address: '上海市普陀区金沙江路 1516 弄',
+          address: '本校区教学楼 102',
           status:"已解决",
           operator:"小明",
           remark:"无"
@@ -353,7 +354,7 @@
           name: '王小虎',
           phone:"18581520828",
           repairman:"",
-          address: '上海市普陀区金沙江路 1518 弄',
+          address: '本校区教学楼 102',
           status:"已取消",
           operator:"小明",
           remark:"电话无法联系"
@@ -363,7 +364,7 @@
           name: '王小虎',
           phone:"18581520828",
           repairman:"宋宋宋",
-          address: '上海市普陀区金沙江路 1517 弄',
+          address: '本校区教学楼 102',
           status:"已解决",
           operator:"小明",
           remark:"无"
@@ -373,7 +374,7 @@
           name: '王小虎',
           phone:"18581520828",
           repairman:"",
-          address: '上海市普陀区金沙江路 1519 弄',
+          address: '本校区教学楼 102',
           status:"已取消",
           operator:"小明",
           remark:"电话无法联系"
@@ -383,7 +384,7 @@
           name: '王小虎',
           phone:"18581520828",
           repairman:"宋宋宋",
-          address: '上海市普陀区金沙江路 1516 弄',
+          address: '本校区教学楼 102',
           status:"已解决",
           operator:"小明",
           remark:"无"

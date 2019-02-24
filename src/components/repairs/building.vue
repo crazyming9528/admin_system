@@ -22,7 +22,7 @@
         <el-col :span="24">
           <el-button type="primary" @click="addNewBuilding()">添加 楼宇/区域</el-button>
 
-          <el-button type="primary" @click="test()">打印</el-button>
+          <el-button type="primary" @click="test()">保存  (测试)</el-button>
         </el-col>
       </el-row>
       <el-row class="panelArea">
