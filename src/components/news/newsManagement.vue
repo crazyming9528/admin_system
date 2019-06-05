@@ -13,21 +13,33 @@
       <el-row class="headArea wow fadeInDown panelArea" data-wow-delay="0.3s">
         <el-col :span="24">
           <span class="title">新闻管理</span>
-          <span class="description">校园新闻资讯的管理</span>
+          <span class="description">新闻资讯的管理</span>
         </el-col>
       </el-row>
-      <TableTools style="margin-bottom: 20px" :searchInfo="searchInfo" @search="search" @refresh="refresh"
-                  @addData="addData"
-                  @toggleDisplay="toggleDisplay()"></TableTools>
+      <!--      <TableTools :searchInfo="searchInfo" @addData="addData" @refresh="refresh" @search="search"-->
+      <!--                  @toggleDisplay="toggleDisplay()"-->
+      <!--                  style="margin-bottom: 20px"></TableTools>-->
+      <TableToolsBox @search="search">
+        <template slot="search">
+          <el-input
+            maxlength="10"
+            placeholder="请输入内容"
+            show-word-limit
+            type="text"
+            v-model="textData"
+          >
+          </el-input>
+        </template>
+      </TableToolsBox>
       <div class="tableWrapper" v-if="displayInfo==='table'">
-        <el-row  class="panelArea">
+        <el-row class="panelArea">
           <el-col :span="24">
-          <el-alert
-            v-if="this.searchData.length"
-            title="以下是搜索结果："
-            type="info"
-            :closable="false">
-          </el-alert>
+            <el-alert
+              :closable="false"
+              title="以下是搜索结果："
+              type="info"
+              v-if="this.searchData.length">
+            </el-alert>
           </el-col>
         </el-row>
 
@@ -36,17 +48,17 @@
 
             <!--:header-cell-style="{background:' #33a0d7',color:'white'}"-->
             <el-table
-              v-loading="loading"
               :data="tableData"
               border
-              style="width: 100%">
+              style="width: 100%"
+              v-loading="loading">
 
               <el-table-column
-                width="50"
-                type="index"
                 align="center"
+                label="#"
+                type="index"
 
-                label="#">
+                width="50">
               </el-table-column>
               <el-table-column
 
@@ -99,9 +111,9 @@
                 label="操作"
                 width="100">
                 <template slot-scope="scope">
-                  <el-button @click="editNews(scope.row)" type="text" size="small">编辑</el-button>
+                  <el-button @click="editNews(scope.row)" size="small" type="text">编辑</el-button>
 
-                  <el-button type="text" size="small" @click="deleteNews(scope.row)">删除</el-button>
+                  <el-button @click="deleteNews(scope.row)" size="small" type="text">删除</el-button>
                 </template>
               </el-table-column>
 
@@ -113,13 +125,13 @@
         <el-row class="panelArea">
           <div class="block">
             <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
               :current-page="currentPage"
-              :page-sizes="[10, 20, 30, 40,50]"
               :page-size="page_size"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="page_total">
+              :page-sizes="[10, 20, 30, 40,50]"
+              :total="page_total"
+              @current-change="handleCurrentChange"
+              @size-change="handleSizeChange"
+              layout="total, sizes, prev, pager, next, jumper">
             </el-pagination>
           </div>
 
@@ -131,9 +143,9 @@
 
       <div class="chartWrapper" v-if="displayInfo==='chart'">
         <el-row class="panelArea">
-          查询周期：<input type="text" placeholder="  按年  按月  按日">
+          查询周期：<input placeholder="  按年  按月  按日" type="text">
 
-          查询时间范围：<input type="text" placeholder=" 开始时间"> - <input type="text" placeholder="结束时间">
+          查询时间范围：<input placeholder=" 开始时间" type="text"> - <input placeholder="结束时间" type="text">
 
           <button>查询</button>
 
@@ -141,19 +153,19 @@
         <el-row class="panelArea echartWrapper">
 
           <div class="echart">
-            <EchartComponent title="阅读量排行榜" subtext="新闻阅读量排行榜" type="rank"></EchartComponent>
+            <EchartComponent subtext="新闻阅读量排行榜" title="阅读量排行榜" type="rank"></EchartComponent>
 
           </div>
           <div class="echart">
-            <EchartComponent title="点赞量排行榜" subtext="新闻点赞量量排行榜" type="rank"></EchartComponent>
+            <EchartComponent subtext="新闻点赞量量排行榜" title="点赞量排行榜" type="rank"></EchartComponent>
           </div>
 
           <div class="echart">
-            <EchartComponent title="新闻模块各周期阅读量分析-折线图" subtext="可以按年 按月 按天的 周期 来进行查询" type="line"></EchartComponent>
+            <EchartComponent subtext="可以按年 按月 按天的 周期 来进行查询" title="新闻模块各周期阅读量分析-折线图" type="line"></EchartComponent>
 
           </div>
           <div class="echart">
-            <EchartComponent title="新闻模块各周期阅读量分析-柱状图" subtext="可以按年 按月 按天的 周期 来进行查询" type="bar"></EchartComponent>
+            <EchartComponent subtext="可以按年 按月 按天的 周期 来进行查询" title="新闻模块各周期阅读量分析-柱状图" type="bar"></EchartComponent>
           </div>
 
 
@@ -171,12 +183,14 @@
 <script>
 
   import TableTools from "../childComponents/tableTools";
+  import TableToolsBox from "../childComponents/tableToolsBox";
   import EchartComponent from "../childComponents/echartComponent";
 
   export default {
     name: "newsManagement",
     components: {
       TableTools,
+      TableToolsBox,
       EchartComponent
     },
     data() {
@@ -187,12 +201,14 @@
         page_total: 0,//分页 总数
         page_size: 10,//分页  一页的大小
         tableData: [],
+        textData: "",
         searchInfo: [
           {name: "title", label: "标题", inputType: "text", placeholder: "请输入需要搜索的标题", value: ""},
           {name: "author", label: "作者", inputType: "text", placeholder: "请输入作者名称", value: ""},
+          {name: "select", label: "订单类型", option: [{id: 0, name: "类型1"}, {id: 1, name: "类型2"}], value: ""},
           {name: "timeRange", label: "时间区间", inputType: "text", placeholder: "请输入时间区间", value: ""},
         ],
-        searchData:[],
+        searchData: [],
 
       }
     },
@@ -206,9 +222,9 @@
         this.currentPage = 1;
 
 
-        if(this.searchData.length>0){
+        if (this.searchData.length > 0) {
           this.search();
-        }else {
+        } else {
           this.getNewsList();
         }
 
@@ -221,9 +237,9 @@
         this.currentPage = val;
 
 
-        if(this.searchData.length>0){
+        if (this.searchData.length > 0) {
           this.search();
-        }else {
+        } else {
           this.getNewsList();
         }
 
@@ -233,9 +249,11 @@
         this.page_size = 10;
       },
       search(data) {
-        console.log("search")
-        if(data){
-          this.searchData=data;
+        console.log("search");
+        console.log(this.textData);
+        return;
+        if (data) {
+          this.searchData = data;
           this.resetPaging();
         }
 
@@ -251,8 +269,8 @@
 
         if (typeof timeRange === "object" && timeRange !== null) {
           console.log(timeRange);
-          startTime = Math.floor(timeRange[0]/1000);
-          endTime = Math.floor(timeRange[1]/1000);
+          startTime = Math.floor(timeRange[0] / 1000);
+          endTime = Math.floor(timeRange[1] / 1000);
         }
 
         this.requestApiFnc("/news/getNewsByQuery", "get", {
@@ -279,7 +297,7 @@
         console.log(title, author, startTime, endTime)
       },
       refresh(value) {
-        this.searchData=[];
+        this.searchData = [];
         this.getNewsList()
       },
       getNewsList() {
@@ -347,7 +365,7 @@
         }
 
       },
-      addData(){
+      addData() {
         this.$router.push({path: "/releaseNews"});
       }
 

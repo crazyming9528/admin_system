@@ -3,25 +3,25 @@
     <el-container class="frame-wrapper">
       <el-header class="frame-header">
         <div class="left wow fadeInLeft">
-          <div class="logo" v-show="isCollapse"><img src="../assets/logo.png" alt="logo"/></div>
-          <span><em>{{this.$store.getters.systemInfo.title}}</em> 管理系统</span>
-          <el-tooltip class="item" effect="dark" content="点击这里可以展开和收起侧栏菜单~" manual value placement="right-start">
-            <el-button style="margin-left: 20px;font-weight: bold" type="text" size="mini" @click="toggleNav"
-                       icon="el-icon-menu">切换菜单
+          <div class="logo" v-show="isCollapse"><img alt="logo" src="../assets/logo.png"/></div>
+          <span>{{this.$store.getters.systemInfo.title}}</span>
+          <el-tooltip class="item" content="点击这里可以展开和收起侧栏菜单~" effect="dark" manual placement="right-start" value>
+            <el-button @click="toggleNav" icon="el-icon-menu" size="mini" style="margin-left: 20px;font-weight: lighter"
+                       type="text">切换菜单
             </el-button>
           </el-tooltip>
         </div>
         <div class="right clearfix wow fadeInRight">
           <div class="time hidden-sm-and-down">{{nowTime}}</div>
           <div class="userInfo">
-            <div class="avatar"><img src="../assets/other-img/avatar.jpg" height="45" width="45"/></div>
+            <div class="avatar"><img height="45" src="../assets/other-img/avatar.jpg" width="45"/></div>
             <el-dropdown trigger="click">
-  <span class="el-dropdown-link">{{this.user.userName}}<i class="el-icon-caret-bottom el-icon--right"></i>
-  </span>
+        <span class="el-dropdown-link">{{this.user.userName}}<i class="el-icon-caret-bottom el-icon--right"></i>
+        </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
                   <i class="el-icon-bell"></i> 通知
-                  <el-badge class="mark" :value="12"/>
+                  <el-badge :value="12" class="mark"/>
                 </el-dropdown-item>
                 <el-dropdown-item>
 
@@ -44,14 +44,15 @@
       </el-header>
       <el-container class="frame-container">
         <el-aside class="frame-aside">
-          <div class="logo" v-show="!isCollapse"><img src="../assets/logo.png" alt="logo"/></div>
+          <div class="logo" v-show="!isCollapse"><img alt="logo" src="../assets/logo.png"/>
+          </div>
 
-          <el-menu :default-active="activeMenuIndex" :router=true style="border: none;" :unique-opened=true
-                   class="el-menu-vertical-demo"
+          <el-menu :collapse="isCollapse" :default-active="activeMenuIndex" :router=true :unique-opened=true
+                   @close="handleClose"
                    @open="handleOpen"
-                   @close="handleClose" :collapse="isCollapse" background-color="#4f5254"
-                   text-color="#fff"
-                   active-text-color="#33a0d7">
+                   active-text-color="#33a0d7" background-color="#4f5254" class="el-menu-vertical-demo"
+                   style="border: none;"
+                   text-color="#fff">
             <el-menu-item index="/home">
 
               <i class="fa fa-home"></i>
@@ -73,10 +74,10 @@
             <el-submenu index="4">
               <template slot="title">
                 <i class="fa fa-cog"></i>
-                <span>设施报修</span>
+                <span>菜单</span>
               </template>
-              <el-menu-item index="/repairs_order">报修订单管理</el-menu-item>
-              <el-menu-item index="/repairs_building">楼宇管理</el-menu-item>
+              <el-menu-item index="/repairs_order">菜单</el-menu-item>
+              <el-menu-item index="/repairs_building">菜单</el-menu-item>
             </el-submenu>
             <el-submenu index="5">
               <template slot="title">
@@ -100,8 +101,12 @@
 
 
         </el-aside>
-        <el-main>
-          <router-view></router-view>
+        <el-main class="frame-main">
+
+          <div class="page-wrapper">
+            <router-view></router-view>
+          </div>
+
         </el-main>
 
 
@@ -171,23 +176,7 @@
       }, 1000);
 
 
-
-      this.getUserInfo();
-      // setTimeout(()=>{
-      //   this.toggleNav();
-      // },3500)
-
-
-      // 使用sessionStorage模拟登录状态
-      // var login = this.getStorage("login");
-      // console.log(login);
-      // if (login == null){
-      //   console.log("没有登录");
-      //   this.$router.push({path: "/login"});
-      // } else {
-      //   console.log("模拟登录成功");
-      // }
-
+      // this.getUserInfo();
 
     }
   }
@@ -195,18 +184,6 @@
 
 <style lang="scss" scoped>
   @import '../assets/styles/base';
-
-
-  .frame-header {
-    overflow: hidden;
-    height: 50px !important;
-    color: $fontColor2;
-    line-height: 50px;
-    background-color: $baseColor1;
-    background-image: linear-gradient(120deg, $baseColor1 10%, #7bbdbc 80%); //background-image: linear-gradient(120deg, $baseColor1 10%, #7bbdbc 100%);
-    background-size: 200% 100%;
-    animation: bg 10s ease-in-out infinite alternate;
-  }
 
   @keyframes bg {
 
@@ -220,6 +197,18 @@
   }
 
   .frame-header {
+    overflow: hidden;
+    height: 50px !important;
+    color: $fontColor2;
+    line-height: 50px;
+    background-color: $baseColor1;
+    background-image: linear-gradient(120deg, $baseColor1 10%, $baseColor3 80%); //background-image: linear-gradient(120deg, $baseColor1 10%, #7bbdbc 100%);
+    background-size: 200% 100%;
+    animation: bg 10s ease-in-out infinite alternate;
+  }
+
+
+  .frame-header {
     .left {
       float: left;
       color: white;
@@ -230,6 +219,7 @@
         height: 50px;
         position: relative;
         vertical-align: top;
+        font-weight: lighter;
 
         img {
           width: 50%;
@@ -298,24 +288,48 @@
     }
 
     .logo {
-      width: 100%;
+      /*width: 100%;*/
+      width: 200px;
       text-align: center;
-      padding: 35px 0;
+      margin: 50px 0 50px 0;
 
       img {
+        /*width: 40%;*/
         width: 40%;
         border-radius: 50%;
-        animation: boxShow 2.5s linear infinite alternate;
+        background-color: $baseColor1;
+        transition: all 0.5s;
+        animation: boxShow 5s linear infinite alternate;
+        cursor: pointer;
+        &:hover{
+          width: 50%
+        }
       }
+
     }
+  }
+
+  .frame-main {
+    padding: 0;
+  }
+
+  .page-wrapper {
+    padding: 20px;
   }
 
   @keyframes boxShow {
     0% {
-      box-shadow: 0 0 0px 0px #7b7b7b;
+      /*box-shadow: 0 0 0px 0px #7b7b7b;*/
+      background-color: $baseColor1;
+      box-shadow: 0 0 10px 5px $baseColor1
+
+
     }
     100% {
-      box-shadow: 0 0 30px 10px #7b7b7b;
+      /*box-shadow: 0 0 30px 10px #7b7b7b;*/
+      background-color: $baseColor3;
+      box-shadow: 0 0 30px 5px $baseColor3;
+
     }
 
   }

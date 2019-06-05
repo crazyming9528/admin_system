@@ -35,7 +35,7 @@
       props: {
         listData: {
           type: Array,
-          required: true
+          required: true,
         }
       },
       data() {

@@ -1,6 +1,6 @@
-window.CUIT_server = {
-  TIMEOUT: 20000,
-  API_ROOT: 'http://120.78.149.155:8040'
+window.API_server = {
+  TIMEOUT: 10000,
+  API_ADDRESS: 'http://admin.crazy.com'
 };
 
 

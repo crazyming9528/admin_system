@@ -645,20 +645,20 @@
             }
             this.loading = true;
             // this.$axios.get("/user/getAll?pageNum=" + this.currentPage + "&pageSize=" + this.page_size).then((res) => {
-            this.$axios.get("/user/getAll",{
+            this.$axios.get("/user",{
               params:{
-                pageNum:this.currentPage,
+                currentPage:this.currentPage,
                 pageSize:this.page_size,
 
               }
             }).then((res) => {
-
-              if (res.data.code === 200) {
-
-                let list = res.data.map.pageInfo.list;
+console.log(res);
+              if (res.data.code === 10000) {
 
 
-                this.page_total = res.data.map.pageInfo.total;
+                let list = res.data.package.data;
+
+                this.page_total = res.data.package.total;
 
                 let _this = this;
                 this.tableData = list.map(function (item) {

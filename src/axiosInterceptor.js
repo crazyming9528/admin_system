@@ -3,8 +3,8 @@ import axios from 'axios'
 import {Base64} from 'js-base64';
 import router from './router'
 
-let baseURL = window.CUIT_server.API_ROOT;
-let timeout = window.CUIT_server.TIMEOUT;
+let baseURL = window.API_server.API_ADDRESS;
+let timeout = window.API_server.TIMEOUT;
 
 let http = axios.create({
   baseURL,

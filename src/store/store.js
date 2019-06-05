@@ -8,7 +8,7 @@ const store = new Vuex.Store({
 
     //基础信息
    systemInfo:{
-     title: "", // 网站标题
+     title: "后台管理系统", // 网站标题
      logo: "", // 网站标志
      slogan: "", // 网站口号
      keyword: "", // 网站关键词
