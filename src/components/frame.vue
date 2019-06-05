@@ -44,9 +44,9 @@
       </el-header>
       <el-container class="frame-container">
         <el-aside class="frame-aside">
+          <el-scrollbar style="height: 100%">
           <div class="logo" v-show="!isCollapse"><img alt="logo" src="../assets/logo.png"/>
           </div>
-
           <el-menu :collapse="isCollapse" :default-active="activeMenuIndex" :router=true :unique-opened=true
                    @close="handleClose"
                    @open="handleOpen"
@@ -98,14 +98,14 @@
               <el-menu-item index="/link">友情链接</el-menu-item>
             </el-submenu>
           </el-menu>
-
-
+          </el-scrollbar>
         </el-aside>
         <el-main class="frame-main">
-
+          <el-scrollbar style="height: 100%">
           <div class="page-wrapper">
             <router-view></router-view>
           </div>
+          </el-scrollbar>
 
         </el-main>
 
