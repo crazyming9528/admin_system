@@ -145,7 +145,19 @@
             child: [],
           })
         },800);
+      },
+      getBuilding(){
+        this.requestApiFnc("/site/getAll","get",null,(res)=>{
+          console.log(res);
+          console.log("ss");
+        })
+
       }
+    },
+    created(){
+this.listData= [];
+      this.getBuilding();
+
     }
   }
 </script>
