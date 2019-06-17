@@ -23,12 +23,20 @@ const store = new Vuex.Store({
     },
     isLogin:{
       state:0
-    }
+    },
+    requestCompleted: false,
+    breadcrumb: []
 
   },
   getters:{
     systemInfo:(state)=>{
       return state.systemInfo;
+    },
+    getBreadList: (state) => {
+      return state.breadcrumb;
+    },
+    getRequestCompleted: (state) => {
+      return state.requestCompleted;
     }
 
   },
@@ -45,7 +53,13 @@ const store = new Vuex.Store({
       }
 
 
-    }
+    },
+    setRequestCompleted(state, mark) {
+      state.requestCompleted = mark;
+    },
+    refreshBreadList(state, arr) {
+      state.breadcrumb = arr;
+    },
 
   }
 });

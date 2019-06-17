@@ -1,5 +1,5 @@
 import {Loading} from "element-ui";
-
+import store from './store/store'
  class GlobalLoading {
 
 
@@ -24,6 +24,9 @@ import {Loading} from "element-ui";
       background: 'transparent',
 
     })
+
+    //通知vuex   请求开始 请求没有完成
+    store.commit("setRequestCompleted",false);
   }
 
   tryHideFullScreenLoading() {
@@ -37,6 +40,9 @@ import {Loading} from "element-ui";
   endLoading() {
 
     this.lo.close()
+
+    //通知vuex   请求完成
+    store.commit("setRequestCompleted",true);
 
   }
 }
