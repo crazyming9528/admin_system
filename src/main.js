@@ -19,7 +19,7 @@ import { Base64 } from 'js-base64';
 // import {globalLoading} from "./gloablLoading";
 import axios from 'axios'
 import {axiosHttp} from "./axiosInterceptor";
-
+import moment from 'moment'
 import 'font-awesome/scss/font-awesome.scss'
 
 Vue.use(mavonEditor)
@@ -46,7 +46,10 @@ Vue.prototype.removeStorage=function(key){
 };
 
 
-
+Vue.filter('formatDate', function (value, formatString) {
+  formatString = formatString || 'YYYY-MM-DD HH:mm:ss';
+  return moment(value).format(formatString);
+});
 
 /* eslint-disable no-new */
 new Vue({

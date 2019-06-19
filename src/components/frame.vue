@@ -12,7 +12,7 @@
           </el-tooltip>
         </div>
         <div class="right clearfix wow fadeInRight">
-          <div class="time hidden-sm-and-down">{{nowTime}}</div>
+          <div class="time hidden-sm-and-down">{{nowTime | formatDate}}</div>
           <div class="userInfo">
             <div class="avatar"><img height="45" src="../assets/other-img/avatar.jpg" width="45"/></div>
             <el-dropdown trigger="click">
@@ -172,7 +172,8 @@
     },
     created() {
       setInterval(() => {
-        this.nowTime = this.showTime();
+        // this.nowTime = this.showTime();
+        this.nowTime = new Date();
       }, 1000);
 
 
