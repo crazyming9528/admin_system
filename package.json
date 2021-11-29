@@ -16,7 +16,7 @@
     "es6-promise": "^4.2.5",
     "font-awesome": "^4.7.0",
     "js-base64": "^2.5.0",
-    "mavon-editor": "^2.6.17",
+    "mavon-editor": "^2.8.2",
     "moment": "^2.24.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
